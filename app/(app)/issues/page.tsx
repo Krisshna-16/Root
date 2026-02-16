@@ -45,21 +45,21 @@ const statusIcons = {
 }
 
 const priorityColors = {
-  High: "bg-destructive text-destructive-foreground",
-  Medium: "bg-chart-4 text-foreground",
-  Low: "bg-muted text-muted-foreground",
+  High: "bg-red-600 text-white",
+  Medium: "bg-[#d4af37]/20 text-[#d4af37] border-[#d4af37]",
+  Low: "bg-gray-200 text-gray-600",
 }
 
 const statusColors = {
-  Open: "border-accent text-accent bg-accent/10",
-  "In Progress": "bg-chart-4 text-foreground",
-  Resolved: "bg-primary text-primary-foreground",
+  Open: "border-[#d4af37] text-[#d4af37] bg-[#d4af37]/10",
+  "In Progress": "bg-[#2d5016]/20 text-[#2d5016] border-[#2d5016]",
+  Resolved: "bg-[#2d5016] text-white",
 }
 
 // AI category detection based on keywords
 function detectCategory(description: string): string {
   const text = description.toLowerCase()
-  
+
   if (text.includes("water") || text.includes("tap") || text.includes("leak") || text.includes("pipe") || text.includes("irrigation") || text.includes("sprinkler")) {
     return text.includes("irrigation") || text.includes("sprinkler") ? "Irrigation" : "Water"
   }
@@ -81,24 +81,24 @@ function detectCategory(description: string): string {
   if (text.includes("grass") || text.includes("weed") || text.includes("plant") || text.includes("garden") || text.includes("overgrown")) {
     return "Vegetation"
   }
-  
+
   return "Other"
 }
 
 // AI priority detection based on urgency keywords
 function detectPriority(description: string): string {
   const text = description.toLowerCase()
-  
+
   const highKeywords = ["urgent", "emergency", "dangerous", "hazard", "safety", "broken", "flooding", "blocked", "severe", "critical", "immediate", "serious"]
   const lowKeywords = ["minor", "small", "when possible", "convenient", "eventually", "not urgent", "cosmetic"]
-  
+
   if (highKeywords.some(keyword => text.includes(keyword))) {
     return "High"
   }
   if (lowKeywords.some(keyword => text.includes(keyword))) {
     return "Low"
   }
-  
+
   return "Medium"
 }
 
@@ -142,16 +142,16 @@ function generateAIAnalysis(category: string, priority: string, description: str
       "Environmental concern logged. Campus sustainability team will evaluate and prioritize accordingly.",
     ],
   }
-  
+
   const categoryAnalyses = analyses[category as keyof typeof analyses] || analyses.Other
   const baseAnalysis = categoryAnalyses[Math.floor(Math.random() * categoryAnalyses.length)]
-  
-  const priorityNote = priority === "High" 
+
+  const priorityNote = priority === "High"
     ? " Marked as high priority for expedited response."
     : priority === "Low"
-    ? " Added to routine maintenance queue."
-    : " Scheduled for standard response time."
-  
+      ? " Added to routine maintenance queue."
+      : " Scheduled for standard response time."
+
   return baseAnalysis + priorityNote
 }
 
@@ -179,16 +179,16 @@ export default function IssuesPage() {
   const handleDescriptionChange = (value: string) => {
     setDescription(value)
     setAiResult(null)
-    
+
     if (value.length > 20) {
       setIsAnalyzing(true)
-      
+
       // Simulate AI processing delay
       setTimeout(() => {
         const detectedCategory = detectCategory(value)
         const detectedPriority = detectPriority(value)
         const analysis = generateAIAnalysis(detectedCategory, detectedPriority, value)
-        
+
         setAiResult({
           category: detectedCategory,
           priority: detectedPriority,
@@ -196,7 +196,7 @@ export default function IssuesPage() {
           confidence: Math.floor(Math.random() * 10) + 85, // 85-95%
         })
         setIsAnalyzing(false)
-        
+
         // Auto-fill the form fields with AI suggestions
         if (!issueType) setIssueType(detectedCategory.toLowerCase().replace(" ", "-"))
         if (!priority) setPriority(detectedPriority.toLowerCase())
@@ -216,233 +216,284 @@ export default function IssuesPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Civic Issue Reporting</h1>
-        <p className="mt-1 text-muted-foreground">Report and track environmental issues with AI-assisted categorization</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#faf8f3] via-white to-[#f5f5dc]">
+      {/* Hero Banner */}
+      <section
+        className="relative h-64 overflow-hidden"
+        style={{
+          backgroundImage: 'url(/green-mountains.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1a3a1a]/90 to-[#2d5016]/80" />
+        <div className="relative h-full flex flex-col justify-center px-8 lg:px-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+            Campus Issue Reporting
+          </h1>
+          <p className="text-[#e8e6d9] text-lg mb-4 max-w-2xl">
+            Help maintain our green campus with AI-powered issue tracking and resolution
+          </p>
+          <div className="flex flex-wrap gap-6 text-white">
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <AlertTriangle className="h-5 w-5 text-[#d4af37]" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-xs text-[#e8e6d9]">Total Issues</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <Circle className="h-5 w-5 text-amber-400" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{stats.open}</p>
+                <p className="text-xs text-[#e8e6d9]">Open</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <CheckCircle2 className="h-5 w-5 text-green-400" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{stats.resolved}</p>
+                <p className="text-xs text-[#e8e6d9]">Resolved</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Stats Summary */}
-      <div className="mb-6 grid gap-4 sm:grid-cols-4">
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Issues</p>
-                <p className="text-2xl font-bold text-foreground">{stats.total}</p>
-              </div>
-              <AlertTriangle className="h-8 w-8 text-accent/30" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Open</p>
-                <p className="text-2xl font-bold text-accent">{stats.open}</p>
-              </div>
-              <Circle className="h-6 w-6 text-accent" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Resolved</p>
-                <p className="text-2xl font-bold text-primary">{stats.resolved}</p>
-              </div>
-              <CheckCircle2 className="h-6 w-6 text-primary" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">High Priority</p>
-                <p className="text-2xl font-bold text-destructive">{stats.highPriority}</p>
-              </div>
-              <AlertCircle className="h-6 w-6 text-destructive" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Report Form */}
-        <Card className="border-border bg-card lg:col-span-1">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-foreground">
-              Report New Issue
-              <Badge variant="outline" className="ml-auto gap-1 text-xs">
-                <Sparkles className="h-3 w-3" />
-                AI Assisted
-              </Badge>
-            </CardTitle>
-            <CardDescription>Describe the issue and let AI help categorize it</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  placeholder="Describe the issue in detail... (AI will analyze after 20+ characters)"
-                  value={description}
-                  onChange={(e) => handleDescriptionChange(e.target.value)}
-                  rows={4}
-                />
-                {isAnalyzing && (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    AI analyzing your description...
-                  </div>
-                )}
-              </div>
-
-              {/* AI Analysis Result */}
-              {aiResult && (
-                <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 space-y-3">
-                  <div className="flex items-center gap-2 text-sm font-medium text-primary">
-                    <Zap className="h-4 w-4" />
-                    AI Analysis
-                    <Badge variant="outline" className="ml-auto text-xs">
-                      {aiResult.confidence}% confident
-                    </Badge>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div className="rounded bg-card p-2">
-                      <p className="text-xs text-muted-foreground">Detected Category</p>
-                      <p className="font-medium text-foreground">{aiResult.category}</p>
-                    </div>
-                    <div className="rounded bg-card p-2">
-                      <p className="text-xs text-muted-foreground">Suggested Priority</p>
-                      <p className="font-medium text-foreground">{aiResult.priority}</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{aiResult.analysis}</p>
+      <div className="p-4 sm:p-6 lg:p-8">
+        {/* Stats Summary */}
+        <div className="mb-6 grid gap-4 sm:grid-cols-4">
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#d4af37]/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Total Issues</p>
+                  <p className="text-3xl font-bold text-[#1a3a1a]">{stats.total}</p>
                 </div>
-              )}
-
-              <div className="space-y-2">
-                <Label htmlFor="issue-type">
-                  Issue Type
-                  {aiResult && <span className="ml-1 text-xs text-primary">(AI suggested)</span>}
-                </Label>
-                <Select value={issueType} onValueChange={setIssueType}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select issue type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="irrigation">Irrigation</SelectItem>
-                    <SelectItem value="waste">Waste Management</SelectItem>
-                    <SelectItem value="tree-care">Tree Care</SelectItem>
-                    <SelectItem value="pollution">Pollution</SelectItem>
-                    <SelectItem value="lighting">Lighting</SelectItem>
-                    <SelectItem value="water">Water</SelectItem>
-                    <SelectItem value="vegetation">Vegetation</SelectItem>
-                    <SelectItem value="drainage">Drainage</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="p-2 rounded-lg bg-[#d4af37]/10 group-hover:bg-[#d4af37]/20 transition-colors">
+                  <AlertTriangle className="h-6 w-6 text-[#d4af37] group-hover:text-[#c9b037] transition-colors" />
+                </div>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
-                <Select value={location} onValueChange={setLocation}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="block-a">Block A, Engineering Building</SelectItem>
-                    <SelectItem value="library">Library Lawn</SelectItem>
-                    <SelectItem value="sports">Sports Complex</SelectItem>
-                    <SelectItem value="garden">Central Garden</SelectItem>
-                    <SelectItem value="hostel-a">Hostel A</SelectItem>
-                    <SelectItem value="hostel-b">Hostel B</SelectItem>
-                    <SelectItem value="admin">Admin Block</SelectItem>
-                    <SelectItem value="canteen">Canteen Area</SelectItem>
-                    <SelectItem value="parking">Parking Lot</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+            </CardContent>
+          </Card>
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-500/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Open</p>
+                  <p className="text-3xl font-bold text-[#d4af37]">{stats.open}</p>
+                </div>
+                <div className="h-4 w-4 rounded-full bg-[#d4af37] group-hover:scale-125 transition-transform" />
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="priority">
-                  Priority
-                  {aiResult && <span className="ml-1 text-xs text-primary">(AI suggested)</span>}
-                </Label>
-                <Select value={priority} onValueChange={setPriority}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="high">High - Urgent attention needed</SelectItem>
-                    <SelectItem value="medium">Medium - Address soon</SelectItem>
-                    <SelectItem value="low">Low - When convenient</SelectItem>
-                  </SelectContent>
-                </Select>
+            </CardContent>
+          </Card>
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Resolved</p>
+                  <p className="text-3xl font-bold text-[#2d5016]">{stats.resolved}</p>
+                </div>
+                <div className="h-4 w-4 rounded-full bg-[#2d5016] group-hover:scale-125 transition-transform" />
               </div>
+            </CardContent>
+          </Card>
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">High Priority</p>
+                  <p className="text-3xl font-bold text-red-600">{stats.highPriority}</p>
+                </div>
+                <div className="h-4 w-4 rounded-full bg-red-600 group-hover:scale-125 transition-transform" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-              <Button type="submit" className="w-full gap-2">
-                <Send className="h-4 w-4" />
-                Submit Report
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Report Form */}
+          <Card className="border-none bg-white shadow-lg lg:col-span-1">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-[#1a3a1a]">
+                Report New Issue
+                <Badge variant="outline" className="ml-auto gap-1 text-xs border-[#d4af37] text-[#d4af37]">
+                  <Sparkles className="h-3 w-3" />
+                  AI Assisted
+                </Badge>
+              </CardTitle>
+              <CardDescription className="text-gray-600">Describe the issue and let AI help categorize it</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    placeholder="Describe the issue in detail... (AI will analyze after 20+ characters)"
+                    value={description}
+                    onChange={(e) => handleDescriptionChange(e.target.value)}
+                    rows={4}
+                  />
+                  {isAnalyzing && (
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      AI analyzing your description...
+                    </div>
+                  )}
+                </div>
 
-        {/* Issues List */}
-        <Card className="border-border bg-card lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-foreground">Reported Issues</CardTitle>
-            <CardDescription>All campus environmental issues</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {issuesData.map((issue) => {
-                const StatusIcon = statusIcons[issue.status as keyof typeof statusIcons]
-                return (
-                  <div
-                    key={issue.id}
-                    className="rounded-lg border border-border bg-secondary/30 p-4 transition-colors hover:border-primary/30"
-                  >
-                    <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs">
-                          {issue.type}
-                        </Badge>
-                        <Badge className={priorityColors[issue.priority as keyof typeof priorityColors]}>
-                          {issue.priority}
-                        </Badge>
-                      </div>
-                      <Badge className={statusColors[issue.status as keyof typeof statusColors]}>
-                        <StatusIcon className="mr-1 h-3 w-3" />
-                        {issue.status}
+                {/* AI Analysis Result */}
+                {aiResult && (
+                  <div className="rounded-lg border border-[#2d5016]/30 bg-gradient-to-r from-[#2d5016]/5 to-white p-3 space-y-3">
+                    <div className="flex items-center gap-2 text-sm font-medium text-[#2d5016]">
+                      <Zap className="h-4 w-4" />
+                      AI Analysis
+                      <Badge variant="outline" className="ml-auto text-xs border-[#d4af37] text-[#d4af37]">
+                        {aiResult.confidence}% confident
                       </Badge>
                     </div>
-                    <p className="mb-3 text-sm text-foreground">{issue.description}</p>
-                    <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {issue.location}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {issue.reportedAt}
-                      </span>
-                      <span className="ml-auto">by {issue.reportedBy}</span>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div className="rounded bg-white border border-gray-200 p-2">
+                        <p className="text-xs text-gray-600">Detected Category</p>
+                        <p className="font-medium text-[#1a3a1a]">{aiResult.category}</p>
+                      </div>
+                      <div className="rounded bg-white border border-gray-200 p-2">
+                        <p className="text-xs text-gray-600">Suggested Priority</p>
+                        <p className="font-medium text-[#1a3a1a]">{aiResult.priority}</p>
+                      </div>
                     </div>
+                    <p className="text-xs text-gray-600 leading-relaxed">{aiResult.analysis}</p>
                   </div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="issue-type">
+                    Issue Type
+                    {aiResult && <span className="ml-1 text-xs text-[#2d5016]">(AI suggested)</span>}
+                  </Label>
+                  <Select value={issueType} onValueChange={setIssueType}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select issue type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="irrigation">Irrigation</SelectItem>
+                      <SelectItem value="waste">Waste Management</SelectItem>
+                      <SelectItem value="tree-care">Tree Care</SelectItem>
+                      <SelectItem value="pollution">Pollution</SelectItem>
+                      <SelectItem value="lighting">Lighting</SelectItem>
+                      <SelectItem value="water">Water</SelectItem>
+                      <SelectItem value="vegetation">Vegetation</SelectItem>
+                      <SelectItem value="drainage">Drainage</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Select value={location} onValueChange={setLocation}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="block-a">Block A, Engineering Building</SelectItem>
+                      <SelectItem value="library">Library Lawn</SelectItem>
+                      <SelectItem value="sports">Sports Complex</SelectItem>
+                      <SelectItem value="garden">Central Garden</SelectItem>
+                      <SelectItem value="hostel-a">Hostel A</SelectItem>
+                      <SelectItem value="hostel-b">Hostel B</SelectItem>
+                      <SelectItem value="admin">Admin Block</SelectItem>
+                      <SelectItem value="canteen">Canteen Area</SelectItem>
+                      <SelectItem value="parking">Parking Lot</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="priority">
+                    Priority
+                    {aiResult && <span className="ml-1 text-xs text-[#2d5016]">(AI suggested)</span>}
+                  </Label>
+                  <Select value={priority} onValueChange={setPriority}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="high">High - Urgent attention needed</SelectItem>
+                      <SelectItem value="medium">Medium - Address soon</SelectItem>
+                      <SelectItem value="low">Low - When convenient</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Button type="submit" className="w-full gap-2 bg-[#d4af37] text-[#1a3a1a] hover:bg-[#c9b037] font-semibold">
+                  <Send className="h-4 w-4" />
+                  Submit Report
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Issues List */}
+          <Card className="border-none bg-white shadow-lg lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-[#1a3a1a]">Reported Issues</CardTitle>
+              <CardDescription className="text-gray-600">All campus environmental issues</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {issuesData.map((issue) => {
+                  const StatusIcon = statusIcons[issue.status as keyof typeof statusIcons]
+                  return (
+                    <div
+                      key={issue.id}
+                      className="rounded-lg border border-gray-200 bg-white p-4 transition-all duration-300 hover:border-[#d4af37] hover:shadow-lg hover:scale-102 group"
+                    >
+                      <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-xs">
+                            {issue.type}
+                          </Badge>
+                          <Badge className={priorityColors[issue.priority as keyof typeof priorityColors]}>
+                            {issue.priority}
+                          </Badge>
+                        </div>
+                        <Badge className={statusColors[issue.status as keyof typeof statusColors]}>
+                          <StatusIcon className="mr-1 h-3 w-3" />
+                          {issue.status}
+                        </Badge>
+                      </div>
+                      <p className="mb-3 text-sm text-[#1a3a1a]">{issue.description}</p>
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600">
+                        <span className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          {issue.location}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {issue.reportedAt}
+                        </span>
+                        <span className="ml-auto">by {issue.reportedBy}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )

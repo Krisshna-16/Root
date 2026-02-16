@@ -72,11 +72,31 @@ export interface ActivityItem {
 // TREES DATA
 // -----------------------------------------------------------------------------
 export const TREES_DATA: Tree[] = [
-  { id: "1", tree_id: "T-1247", location: "Block A, Engineering Building", health: "Healthy", created_at: "2026-01-30", species: "Neem", uploaded_by: "Priya Sharma", green_coverage: 85, leaf_density: 70, water_needs: "Low" },
-  { id: "2", tree_id: "T-1246", location: "Library Lawn - North Side", health: "Moderate", created_at: "2026-01-29", species: "Banyan", uploaded_by: "Rahul Verma", green_coverage: 60, leaf_density: 55, water_needs: "Medium" },
-  { id: "3", tree_id: "T-1245", location: "Sports Complex Entrance", health: "Healthy", created_at: "2026-01-29", species: "Mango", uploaded_by: "Anita Desai", green_coverage: 80, leaf_density: 75, water_needs: "Low" },
-  { id: "4", tree_id: "T-1244", location: "Central Garden - Fountain Area", health: "Critical", created_at: "2026-01-28", species: "Gulmohar", uploaded_by: "Vikram Singh", green_coverage: 40, leaf_density: 30, water_needs: "High" },
-  { id: "5", tree_id: "T-1243", location: "Hostel A Main Entrance", health: "Healthy", created_at: "2026-01-28", species: "Ashoka", uploaded_by: "Meera Patel", green_coverage: 88, leaf_density: 80, water_needs: "Low" },
+  { id: "1", tree_id: "BLK-A-1247", location: "Block A, Engineering Building", health: "Healthy", created_at: "2026-01-30", species: "Neem", uploaded_by: "Priya Sharma", green_coverage: 85, leaf_density: 70, water_needs: "Low" },
+  { id: "2", tree_id: "LIB-G-1246", location: "Library Lawn", health: "Moderate", created_at: "2026-01-29", species: "Banyan", uploaded_by: "Rahul Verma", green_coverage: 60, leaf_density: 55, water_needs: "Medium" },
+  { id: "3", tree_id: "SPT-C-1245", location: "Sports Complex", health: "Healthy", created_at: "2026-01-29", species: "Mango", uploaded_by: "Anita Desai", green_coverage: 80, leaf_density: 75, water_needs: "Low" },
+  { id: "4", tree_id: "GDN-C-1244", location: "Central Garden", health: "Critical", created_at: "2026-01-28", species: "Gulmohar", uploaded_by: "Vikram Singh", green_coverage: 40, leaf_density: 30, water_needs: "High" },
+  { id: "5", tree_id: "HST-A-1243", location: "Hostel A Entrance", health: "Healthy", created_at: "2026-01-28", species: "Ashoka", uploaded_by: "Meera Patel", green_coverage: 88, leaf_density: 80, water_needs: "Low" },
+  { id: "6", tree_id: "ADM-B-2156", location: "Admin Block", health: "Healthy", created_at: "2026-01-27", species: "Peepal", uploaded_by: "Suresh Kumar", green_coverage: 82, leaf_density: 68, water_needs: "Low" },
+  { id: "7", tree_id: "CNT-A-3421", location: "Canteen Area", health: "Moderate", created_at: "2026-01-27", species: "Tamarind", uploaded_by: "Kavita Iyer", green_coverage: 65, leaf_density: 58, water_needs: "Medium" },
+  { id: "8", tree_id: "BLK-A-4782", location: "Block A, Engineering Building", health: "Healthy", created_at: "2026-01-26", species: "Coconut", uploaded_by: "Amit Joshi", green_coverage: 90, leaf_density: 85, water_needs: "Medium" },
+  { id: "9", tree_id: "LIB-G-5893", location: "Library Lawn", health: "Healthy", created_at: "2026-01-26", species: "Jamun", uploaded_by: "Divya Nair", green_coverage: 78, leaf_density: 72, water_needs: "Low" },
+  { id: "10", tree_id: "SPT-C-6234", location: "Sports Complex", health: "Critical", created_at: "2026-01-25", species: "Teak", uploaded_by: "Rajesh Gupta", green_coverage: 35, leaf_density: 28, water_needs: "High" },
+  { id: "11", tree_id: "GDN-C-7456", location: "Central Garden", health: "Healthy", created_at: "2026-01-25", species: "Mahogany", uploaded_by: "Sneha Reddy", green_coverage: 86, leaf_density: 76, water_needs: "Low" },
+  { id: "12", tree_id: "HST-A-8123", location: "Hostel A Entrance", health: "Moderate", created_at: "2026-01-24", species: "Jackfruit", uploaded_by: "Arjun Mehta", green_coverage: 62, leaf_density: 54, water_needs: "Medium" },
+  { id: "13", tree_id: "ADM-B-9345", location: "Admin Block", health: "Healthy", created_at: "2026-01-24", species: "Sandalwood", uploaded_by: "Lakshmi Iyer", green_coverage: 84, leaf_density: 74, water_needs: "Low" },
+  { id: "14", tree_id: "CNT-A-1567", location: "Canteen Area", health: "Healthy", created_at: "2026-01-23", species: "Ficus", uploaded_by: "Karan Singh", green_coverage: 88, leaf_density: 82, water_needs: "Low" },
+  { id: "15", tree_id: "BLK-A-2789", location: "Block A, Engineering Building", health: "Moderate", created_at: "2026-01-23", species: "Neem", uploaded_by: "Pooja Sharma", green_coverage: 58, leaf_density: 50, water_needs: "Medium" },
+  { id: "16", tree_id: "LIB-G-3912", location: "Library Lawn", health: "Healthy", created_at: "2026-01-22", species: "Banyan", uploaded_by: "Vikram Patel", green_coverage: 92, leaf_density: 88, water_needs: "Low" },
+  { id: "17", tree_id: "SPT-C-4523", location: "Sports Complex", health: "Healthy", created_at: "2026-01-22", species: "Mango", uploaded_by: "Ritu Desai", green_coverage: 81, leaf_density: 73, water_needs: "Low" },
+  { id: "18", tree_id: "GDN-C-5634", location: "Central Garden", health: "Moderate", created_at: "2026-01-21", species: "Gulmohar", uploaded_by: "Sanjay Kumar", green_coverage: 64, leaf_density: 56, water_needs: "Medium" },
+  { id: "19", tree_id: "HST-A-6745", location: "Hostel A Entrance", health: "Critical", created_at: "2026-01-21", species: "Ashoka", uploaded_by: "Neha Verma", green_coverage: 38, leaf_density: 32, water_needs: "High" },
+  { id: "20", tree_id: "ADM-B-7856", location: "Admin Block", health: "Healthy", created_at: "2026-01-20", species: "Peepal", uploaded_by: "Ramesh Rao", green_coverage: 87, leaf_density: 79, water_needs: "Low" },
+  { id: "21", tree_id: "CNT-A-8967", location: "Canteen Area", health: "Healthy", created_at: "2026-01-20", species: "Tamarind", uploaded_by: "Anjali Joshi", green_coverage: 83, leaf_density: 75, water_needs: "Low" },
+  { id: "22", tree_id: "BLK-A-9178", location: "Block A, Engineering Building", health: "Moderate", created_at: "2026-01-19", species: "Coconut", uploaded_by: "Deepak Shah", green_coverage: 67, leaf_density: 59, water_needs: "Medium" },
+  { id: "23", tree_id: "LIB-G-1289", location: "Library Lawn", health: "Healthy", created_at: "2026-01-19", species: "Jamun", uploaded_by: "Priya Nair", green_coverage: 89, leaf_density: 81, water_needs: "Low" },
+  { id: "24", tree_id: "SPT-C-2391", location: "Sports Complex", health: "Healthy", created_at: "2026-01-18", species: "Teak", uploaded_by: "Arun Gupta", green_coverage: 85, leaf_density: 77, water_needs: "Low" },
+  { id: "25", tree_id: "GDN-C-3492", location: "Central Garden", health: "Moderate", created_at: "2026-01-18", species: "Mahogany", uploaded_by: "Simran Kaur", green_coverage: 61, leaf_density: 53, water_needs: "Medium" },
 ]
 
 // -----------------------------------------------------------------------------

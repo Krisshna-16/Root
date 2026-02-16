@@ -1,243 +1,297 @@
 import Link from "next/link"
-import { TreePine, AlertTriangle, BarChart3, ArrowRight, Leaf, Droplets, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Leaf, TreeDeciduous, AlertCircle, TrendingUp, Shield, Users, Droplet, CheckCircle } from "lucide-react"
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-border bg-card">
+      <header className="bg-[#1a3a1a] border-b border-[#2d5016]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <Leaf className="h-6 w-6 text-primary-foreground" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#d4af37]">
+              <Leaf className="h-6 w-6 text-[#1a3a1a]" />
             </div>
-            <span className="text-xl font-bold text-foreground">ROOTSENSE</span>
+            <span className="text-xl font-bold text-white">ROOTSENSE</span>
           </div>
           <nav className="hidden items-center gap-6 md:flex">
-            <Link href="/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link href="/dashboard" className="text-sm font-medium text-[#e8e6d9] transition-colors hover:text-white">
               Dashboard
             </Link>
-            <Link href="/trees" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link href="/trees" className="text-sm font-medium text-[#e8e6d9] transition-colors hover:text-white">
               Trees
             </Link>
-            <Link href="/issues" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link href="/issues" className="text-sm font-medium text-[#e8e6d9] transition-colors hover:text-white">
               Civic Issues
             </Link>
-            <Link href="/impact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            <Link href="/impact" className="text-sm font-medium text-[#e8e6d9] transition-colors hover:text-white">
               Impact
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-
-
+            <Link
+              href="/admin/login"
+              className="flex items-center gap-1.5 text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors"
+            >
+              <Shield className="h-4 w-4" />
+              Admin
+            </Link>
 
             <Link
               href="/sign-in"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-[#e8e6d9] hover:text-white transition-colors"
             >
               Sign In
             </Link>
 
-            <Button variant="outline" asChild>
-              <Link href="/sign-up">Sign Up</Link>
+            <Button className="bg-[#d4af37] text-[#1a3a1a] hover:bg-[#c9b037] font-semibold" asChild>
+              <Link href="/sign-up">Get In Touch</Link>
             </Button>
           </div>
-
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-secondary/50 to-background px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-        <div className="absolute inset-0 -z-10 opacity-20">
-          <div className="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-primary/30 blur-3xl" />
-          <div className="absolute right-1/4 bottom-1/4 h-48 w-48 rounded-full bg-accent/30 blur-3xl" />
-        </div>
-        <div className="mx-auto max-w-4xl text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground">
-            <Globe className="h-4 w-4 text-primary" />
-            Campus Sustainability Platform
-          </div>
-          <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            <span className="text-balance">Turning Campus Sustainability into</span>{" "}
-            <span className="text-primary">Measurable Action</span>
+      <section
+        className="relative min-h-[600px] flex items-center justify-center overflow-hidden"
+        style={{
+          backgroundImage: 'url(/green-mountains.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1a3a1a]/80 via-[#1a3a1a]/70 to-[#1a3a1a]/80" />
+
+        {/* Content */}
+        <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+            We take care of your<br />campus & trees
           </h1>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground">
+          <p className="mb-8 text-lg text-[#e8e6d9] max-w-2xl mx-auto">
             ROOTSENSE is a sustainability intelligence platform for college campuses. Track tree survival, report civic issues, and measure environmental impact with AI-powered insights.
           </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button size="lg" asChild>
-              <Link href="/sign-in" className="gap-2">
-                Sign In
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button className="bg-[#d4af37] text-[#1a3a1a] hover:bg-[#c9b037] font-semibold text-base px-8 py-6" asChild>
+              <Link href="/sign-up">Get In Touch</Link>
             </Button>
-
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/sign-up">Sign Up</Link>
-            </Button>
-
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/trees">View Tree Data</Link>
+            <Button variant="outline" className="border-2 border-amber-400 text-amber-400 hover:bg-amber-400/10 font-semibold text-base px-8 py-6" asChild>
+              <Link href="/admin/login">Admin Access</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="px-4 py-20 sm:px-6 lg:px-8">
+      {/* Services Section */}
+      <section className="px-4 py-20 sm:px-6 lg:px-8 bg-[#faf8f3]">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-foreground">Core Features</h2>
-            <p className="mx-auto max-w-2xl text-muted-foreground">
-              Comprehensive tools to monitor, report, and improve campus sustainability
-            </p>
-          </div>
           <div className="grid gap-6 md:grid-cols-3">
-            <Card className="border-border bg-card transition-shadow hover:shadow-lg">
-              <CardHeader>
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <TreePine className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-foreground">Tree Survival Tracking</CardTitle>
-                <CardDescription>
-                  Monitor tree health across campus with photo uploads and AI-powered analysis. Track survival rates and identify trees needing attention.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Photo-based health assessment
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Location-based tracking
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                    Historical trend analysis
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+            {/* Service Card 1 */}
+            <div className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 h-80">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: 'url(/green-mountains.jpg)',
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a3a1a]/90 via-[#1a3a1a]/50 to-transparent" />
+              <div className="relative h-full flex flex-col justify-end p-6">
+                <TreeDeciduous className="h-10 w-10 text-[#d4af37] mb-3" />
+                <h3 className="text-2xl font-bold text-white mb-2">Tree Health Tracking</h3>
+                <p className="text-[#e8e6d9] text-sm">Monitor tree health with AI-powered analysis and photo-based tracking</p>
+              </div>
+            </div>
 
-            <Card className="border-border bg-card transition-shadow hover:shadow-lg">
-              <CardHeader>
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10">
-                  <AlertTriangle className="h-6 w-6 text-accent" />
-                </div>
-                <CardTitle className="text-foreground">Civic Issue Reporting</CardTitle>
-                <CardDescription>
-                  Report and track environmental issues on campus. From broken irrigation to waste management, keep your campus clean and green.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Easy issue submission
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Priority-based tracking
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                    Resolution status updates
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+            {/* Service Card 2 */}
+            <div className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 h-80">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: 'url(/botanical-bg.jpg)',
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a3a1a]/90 via-[#1a3a1a]/50 to-transparent" />
+              <div className="relative h-full flex flex-col justify-end p-6">
+                <AlertCircle className="h-10 w-10 text-[#d4af37] mb-3" />
+                <h3 className="text-2xl font-bold text-white mb-2">Civic Issue Reporting</h3>
+                <p className="text-[#e8e6d9] text-sm">Report and track environmental issues to keep your campus clean and green</p>
+              </div>
+            </div>
 
-            <Card className="border-border bg-card transition-shadow hover:shadow-lg">
-              <CardHeader>
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-chart-3/10">
-                  <BarChart3 className="h-6 w-6 text-chart-3" />
-                </div>
-                <CardTitle className="text-foreground">Eco-Impact Intelligence</CardTitle>
-                <CardDescription>
-                  Measure and visualize your campus environmental impact. Track water savings, carbon offset, and sustainability scores.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-chart-3" />
-                    Water conservation metrics
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-chart-3" />
-                    Department leaderboards
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-chart-3" />
-                    Green score calculation
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+            {/* Service Card 3 */}
+            <div className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 h-80">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: 'url(/green-mountains.jpg)',
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a3a1a]/90 via-[#1a3a1a]/50 to-transparent" />
+              <div className="relative h-full flex flex-col justify-end p-6">
+                <TrendingUp className="h-10 w-10 text-[#d4af37] mb-3" />
+                <h3 className="text-2xl font-bold text-white mb-2">Environmental Impact</h3>
+                <p className="text-[#e8e6d9] text-sm">Measure and visualize your campus environmental impact with real-time data</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="border-y border-border bg-secondary/30 px-4 py-16 sm:px-6 lg:px-8">
+      {/* Welcome Section */}
+      <section className="px-4 py-20 sm:px-6 lg:px-8 bg-white">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            <div>
+              <h2 className="mb-6 text-4xl font-bold text-[#1a3a1a]">
+                Welcome To RootSense, We Cultivate More Than Just Plants
+              </h2>
+              <p className="mb-6 text-gray-700 leading-relaxed">
+                Established with a passion for nature and a commitment to sustainable living, RootSense has been a leading innovator dedicated to providing innovative solutions for greening campuses. Our mission is to empower institutions with the tools they need for effective tree management, environmental monitoring, and community engagement.
+              </p>
+              <Link href="/dashboard" className="inline-flex items-center text-[#2d5016] font-semibold hover:text-[#1a3a1a] transition-colors">
+                About Us →
+              </Link>
+            </div>
+            <div className="relative h-96 rounded-lg overflow-hidden shadow-xl">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: 'url(/green-mountains.jpg)',
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Statistics Section */}
+      <section className="px-4 py-16 sm:px-6 lg:px-8 bg-[#f5f5dc]">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 text-center md:grid-cols-4">
-            <div>
-              <div className="mb-2 text-4xl font-bold text-primary">1,247</div>
-              <div className="text-sm text-muted-foreground">Trees Monitored</div>
+            <div className="transition-transform duration-300 hover:scale-110">
+              <div className="mb-2 text-5xl font-bold text-[#1a3a1a]">1,247</div>
+              <div className="text-sm font-medium text-gray-700">Trees Monitored</div>
             </div>
-            <div>
-              <div className="mb-2 text-4xl font-bold text-primary">89%</div>
-              <div className="text-sm text-muted-foreground">Survival Rate</div>
+            <div className="transition-transform duration-300 hover:scale-110">
+              <div className="mb-2 text-5xl font-bold text-[#1a3a1a]">89%</div>
+              <div className="text-sm font-medium text-gray-700">Survival Rate</div>
             </div>
-            <div>
-              <div className="mb-2 flex items-center justify-center gap-1 text-4xl font-bold text-primary">
-                <Droplets className="h-8 w-8" />
-                24K
+            <div className="transition-transform duration-300 hover:scale-110">
+              <div className="mb-2 text-5xl font-bold text-[#1a3a1a]">24K</div>
+              <div className="text-sm font-medium text-gray-700">Liters Water Saved</div>
+            </div>
+            <div className="transition-transform duration-300 hover:scale-110">
+              <div className="mb-2 text-5xl font-bold text-[#1a3a1a]">156</div>
+              <div className="text-sm font-medium text-gray-700">Issues Resolved</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="px-4 py-20 sm:px-6 lg:px-8 bg-[#1a3a1a]">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-white">Meticulous And Sustainable Process</h2>
+            <Button className="bg-[#d4af37] text-[#1a3a1a] hover:bg-[#c9b037] font-semibold mt-4">
+              Our Process
+            </Button>
+          </div>
+          <div className="grid gap-8 md:grid-cols-4">
+            {/* Step 1 */}
+            <div className="text-center">
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#d4af37]">
+                  <Users className="h-8 w-8 text-[#1a3a1a]" />
+                </div>
               </div>
-              <div className="text-sm text-muted-foreground">Liters Water Saved</div>
+              <div className="mb-2 text-[#d4af37] font-bold">01</div>
+              <h3 className="mb-2 text-lg font-bold text-white">Discovery and Consultation</h3>
+              <p className="text-sm text-[#e8e6d9]">
+                We analyze your campus needs and create a customized sustainability plan
+              </p>
             </div>
-            <div>
-              <div className="mb-2 text-4xl font-bold text-primary">156</div>
-              <div className="text-sm text-muted-foreground">Issues Resolved</div>
+
+            {/* Step 2 */}
+            <div className="text-center">
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#d4af37]">
+                  <TreeDeciduous className="h-8 w-8 text-[#1a3a1a]" />
+                </div>
+              </div>
+              <div className="mb-2 text-[#d4af37] font-bold">02</div>
+              <h3 className="mb-2 text-lg font-bold text-white">Data Collection</h3>
+              <p className="text-sm text-[#e8e6d9]">
+                Gather tree health data through photo-based tracking and manual surveys
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="text-center">
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#d4af37]">
+                  <TrendingUp className="h-8 w-8 text-[#1a3a1a]" />
+                </div>
+              </div>
+              <div className="mb-2 text-[#d4af37] font-bold">03</div>
+              <h3 className="mb-2 text-lg font-bold text-white">AI-Powered Analysis</h3>
+              <p className="text-sm text-[#e8e6d9]">
+                Our AI analyzes tree health and provides actionable insights
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="text-center">
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#d4af37]">
+                  <CheckCircle className="h-8 w-8 text-[#1a3a1a]" />
+                </div>
+              </div>
+              <div className="mb-2 text-[#d4af37] font-bold">04</div>
+              <h3 className="mb-2 text-lg font-bold text-white">Action & Support</h3>
+              <p className="text-sm text-[#e8e6d9]">
+                Implement recommendations and track progress with ongoing support
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <section className="px-4 py-20 sm:px-6 lg:px-8 bg-white">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="mb-4 text-3xl font-bold text-foreground">Ready to make your campus greener?</h2>
-          <p className="mb-8 text-muted-foreground">
-            Start tracking your sustainability efforts today and make a measurable impact.
+          <h2 className="mb-4 text-3xl font-bold text-[#1a3a1a]">Ready to make your campus greener?</h2>
+          <p className="mb-8 text-gray-700">
+            Start tracking your sustainability efforts today and make a measurable impact on your campus environment.
           </p>
-          <Button size="lg" asChild>
-            <Link href="/dashboard" className="gap-2">
-              Go to Dashboard
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button className="bg-[#2d5016] text-white hover:bg-[#1a3a1a] font-semibold text-base px-8 py-6" asChild>
+              <Link href="/dashboard">Get Started</Link>
+            </Button>
+            <Button variant="outline" className="border-2 border-amber-600 text-amber-600 hover:bg-amber-50 font-semibold text-base px-8 py-6" asChild>
+              <Link href="/admin/login">Admin Portal</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card px-4 py-8 sm:px-6 lg:px-8">
+      <footer className="bg-[#1a3a1a] border-t border-[#2d5016] px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <Leaf className="h-4 w-4 text-primary-foreground" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#d4af37]">
+                <Leaf className="h-4 w-4 text-[#1a3a1a]" />
               </div>
-              <span className="font-bold text-foreground">ROOTSENSE</span>
+              <span className="font-bold text-white">ROOTSENSE</span>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[#e8e6d9]">
               Hackathon Project - Sustainability Intelligence for Campuses
             </p>
+            <Link href="/admin/login" className="text-xs text-amber-400 hover:text-amber-300 transition-colors">
+              Admin Portal
+            </Link>
           </div>
         </div>
       </footer>

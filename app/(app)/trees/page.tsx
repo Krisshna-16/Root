@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { TreePine, Upload, MapPin, Calendar, Search, Filter, Loader2, CheckCircle2, Leaf, Droplets, Sun, Info, Heart } from "lucide-react"
+import { TreePine, Upload, MapPin, Calendar, Search, Filter, Loader2, CheckCircle2, Leaf, Droplets, Sun, Info, Heart, AlertTriangle } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import { analyzeTreeImage } from "@/lib/gemini"
 import { getTrees, addTree } from "@/lib/services"
@@ -37,15 +37,15 @@ import { Tree } from "@/lib/mock-data"
 import { CameraCapture } from "@/components/camera-capture"
 
 const healthColors = {
-  Healthy: "bg-primary text-primary-foreground",
-  Moderate: "border-chart-4 text-chart-4 bg-chart-4/10",
-  Critical: "bg-destructive text-destructive-foreground",
+  Healthy: "bg-[#2d5016] text-white",
+  Moderate: "bg-[#d4af37]/20 text-[#d4af37] border-[#d4af37]",
+  Critical: "bg-red-600 text-white",
 }
 
 const healthDots = {
-  Healthy: "bg-primary",
-  Moderate: "bg-chart-4",
-  Critical: "bg-destructive",
+  Healthy: "bg-[#2d5016]",
+  Moderate: "bg-[#d4af37]",
+  Critical: "bg-red-600",
 }
 
 const locationMap: Record<string, string> = {
@@ -254,342 +254,393 @@ export default function TreesPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      {/* Page Header */}
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Tree Monitoring</h1>
-          <p className="mt-1 text-muted-foreground">Track and manage campus trees with Supabase & AI integration</p>
+    <div className="min-h-screen bg-gradient-to-br from-[#faf8f3] via-white to-[#f5f5dc]">
+      {/* Hero Banner */}
+      <section
+        className="relative h-64 overflow-hidden"
+        style={{
+          backgroundImage: 'url(/green-mountains.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1a3a1a]/90 to-[#2d5016]/80" />
+        <div className="relative h-full flex flex-col justify-center px-8 lg:px-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+            Tree Monitoring System
+          </h1>
+          <p className="text-[#e8e6d9] text-lg mb-4 max-w-2xl">
+            Track, monitor, and nurture campus trees with AI-powered health analysis
+          </p>
+          <div className="flex flex-wrap gap-6 text-white">
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <TreePine className="h-5 w-5 text-[#d4af37]" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-xs text-[#e8e6d9]">Total Trees</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <Leaf className="h-5 w-5 text-green-400" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{stats.healthy}</p>
+                <p className="text-xs text-[#e8e6d9]">Healthy</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <AlertTriangle className="h-5 w-5 text-[#d4af37]" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{stats.moderate}</p>
+                <p className="text-xs text-[#e8e6d9]">Moderate</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <Dialog open={isUploadOpen} onOpenChange={handleDialogClose}>
-          <DialogTrigger asChild>
-            <Button className="gap-2">
-              <Upload className="h-4 w-4" />
-              Add Tree
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Add New Tree</DialogTitle>
-              <DialogDescription>
-                Select an area and capture a photo to analyze tree health.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              {!uploadedImagePreview && !isCameraOpen ? (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="location">Area / Location</Label>
-                    <Select value={newTreeLocation} onValueChange={handleAreaChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Area" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {AREAS.map((area) => (
-                          <SelectItem key={area.id} value={area.id}>{area.label} ({area.id})</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+      </section>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="tree-id">Tree ID (Auto-generated)</Label>
-                    <Input
-                      id="tree-id"
-                      value={newTreeId}
-                      readOnly
-                      className="bg-muted font-mono"
-                      placeholder="Select an area first"
-                    />
-                  </div>
+      <div className="p-4 sm:p-6 lg:p-8">
+        {/* Add Tree Button */}
+        <div className="mb-6 flex justify-end">
+          <Dialog open={isUploadOpen} onOpenChange={handleDialogClose}>
+            <DialogTrigger asChild>
+              <Button className="gap-2 bg-[#d4af37] text-[#1a3a1a] hover:bg-[#c9b037] font-semibold shadow-lg">
+                <Upload className="h-4 w-4" />
+                Add Tree
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Add New Tree</DialogTitle>
+                <DialogDescription>
+                  Select an area and capture a photo to analyze tree health.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                {!uploadedImagePreview && !isCameraOpen ? (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Area / Location</Label>
+                      <Select value={newTreeLocation} onValueChange={handleAreaChange}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Area" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {AREAS.map((area) => (
+                            <SelectItem key={area.id} value={area.id}>{area.label} ({area.id})</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                  <div className="pt-2">
-                    <Button
-                      variant="outline"
-                      className="w-full h-32 flex flex-col gap-2 border-dashed border-2 hover:border-primary/50 hover:bg-muted/50"
-                      onClick={() => setIsCameraOpen(true)}
-                      disabled={!newTreeLocation} // Force area selection first
-                    >
-                      <CheckCircle2 className="h-10 w-10 text-primary" />
-                      <span className="text-lg font-semibold">Take Photo</span>
-                      <span className="text-xs text-muted-foreground">Camera required for verification</span>
-                    </Button>
-                    {!newTreeLocation && (
-                      <p className="text-xs text-destructive text-center mt-2">Please select an Area first.</p>
-                    )}
-                  </div>
-                </>
-              ) : isCameraOpen ? (
-                <CameraCapture
-                  onCapture={handleCameraCapture}
-                  onCancel={() => setIsCameraOpen(false)}
-                />
-              ) : (
-                <div className="space-y-4">
-                  {/* Uploaded Image Preview */}
-                  <div className="relative aspect-video overflow-hidden rounded-lg border border-border">
-                    <img
-                      src={uploadedImagePreview || "/placeholder.svg"}
-                      alt="Uploaded tree"
-                      className="h-full w-full object-cover"
-                    />
-                    {isAnalyzing && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
-                        <Loader2 className="mb-3 h-8 w-8 animate-spin text-primary" />
-                        <p className="text-sm font-medium text-foreground">AI Analyzing Tree...</p>
-                      </div>
-                    )}
-                  </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="tree-id">Tree ID (Auto-generated)</Label>
+                      <Input
+                        id="tree-id"
+                        value={newTreeId}
+                        readOnly
+                        className="bg-muted font-mono"
+                        placeholder="Select an area first"
+                      />
+                    </div>
 
-                  {/* Analysis Results (Editable) */}
-                  {analysisComplete && analysisResult && (
-                    <div className="space-y-4 rounded-lg border border-primary/30 bg-primary/5 p-4">
-                      <div className="flex items-center gap-2 text-primary">
-                        <CheckCircle2 className="h-5 w-5" />
-                        <span className="font-semibold">AI Analysis Complete</span>
-                        {analysisResult.isMock && (
-                          <Badge variant="destructive" className="ml-2">
-                            SIMULATION
-                          </Badge>
-                        )}
-                      </div>
-
-                      {analysisResult.isMock && (
-                        <div className="rounded-md border border-yellow-500/50 bg-yellow-500/10 p-3 text-sm text-yellow-600 dark:text-yellow-400">
-                          <p className="font-semibold">⚠️ AI Service Busy</p>
-                          <p>We hit the free tier rate limit. Results are simulated.</p>
+                    <div className="pt-2">
+                      <Button
+                        variant="outline"
+                        className="w-full h-32 flex flex-col gap-2 border-dashed border-2 hover:border-primary/50 hover:bg-muted/50"
+                        onClick={() => setIsCameraOpen(true)}
+                        disabled={!newTreeLocation} // Force area selection first
+                      >
+                        <CheckCircle2 className="h-10 w-10 text-primary" />
+                        <span className="text-lg font-semibold">Take Photo</span>
+                        <span className="text-xs text-muted-foreground">Camera required for verification</span>
+                      </Button>
+                      {!newTreeLocation && (
+                        <p className="text-xs text-destructive text-center mt-2">Please select an Area first.</p>
+                      )}
+                    </div>
+                  </>
+                ) : isCameraOpen ? (
+                  <CameraCapture
+                    onCapture={handleCameraCapture}
+                    onCancel={() => setIsCameraOpen(false)}
+                  />
+                ) : (
+                  <div className="space-y-4">
+                    {/* Uploaded Image Preview */}
+                    <div className="relative aspect-video overflow-hidden rounded-lg border border-border">
+                      <img
+                        src={uploadedImagePreview || "/placeholder.svg"}
+                        alt="Uploaded tree"
+                        className="h-full w-full object-cover"
+                      />
+                      {isAnalyzing && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
+                          <Loader2 className="mb-3 h-8 w-8 animate-spin text-primary" />
+                          <p className="text-sm font-medium text-foreground">AI Analyzing Tree...</p>
                         </div>
                       )}
-
-                      <div className="space-y-3">
-                        {/* Species */}
-                        <div className="space-y-1">
-                          <Label>Detected Species</Label>
-                          <Input
-                            value={editableSpecies}
-                            onChange={(e) => setEditableSpecies(e.target.value)}
-                            className="bg-background"
-                          />
-                        </div>
-
-                        {/* Health */}
-                        <div className="space-y-1">
-                          <Label>Health Status</Label>
-                          <Select value={editableHealth} onValueChange={setEditableHealth}>
-                            <SelectTrigger className="bg-background">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Healthy">Healthy</SelectItem>
-                              <SelectItem value="Moderate">Moderate</SelectItem>
-                              <SelectItem value="Critical">Critical</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        {/* Metrics */}
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="space-y-1">
-                            <Label>Green Coverage (%)</Label>
-                            <Input
-                              type="number"
-                              value={editableGreenCoverage}
-                              onChange={(e) => setEditableGreenCoverage(Number(e.target.value))}
-                              className="bg-background"
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <Label>Leaf Density (%)</Label>
-                            <Input
-                              type="number"
-                              value={editableLeafDensity}
-                              onChange={(e) => setEditableLeafDensity(Number(e.target.value))}
-                              className="bg-background"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-1">
-                          <Label>Water Needs</Label>
-                          <Select value={editableWaterNeeds} onValueChange={setEditableWaterNeeds}>
-                            <SelectTrigger className="bg-background">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Low">Low</SelectItem>
-                              <SelectItem value="Medium">Medium</SelectItem>
-                              <SelectItem value="High">High</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2 pt-2">
-                        <Button variant="outline" onClick={resetUpload} className="flex-1 bg-transparent">
-                          Retake
-                        </Button>
-                        <Button className="flex-1" onClick={saveTreeData}>
-                          Save Tree
-                        </Button>
-                      </div>
                     </div>
-                  )}
+
+                    {/* Analysis Results (Editable) */}
+                    {analysisComplete && analysisResult && (
+                      <div className="space-y-4 rounded-lg border border-primary/30 bg-primary/5 p-4">
+                        <div className="flex items-center gap-2 text-primary">
+                          <CheckCircle2 className="h-5 w-5" />
+                          <span className="font-semibold">AI Analysis Complete</span>
+                          {analysisResult.isMock && (
+                            <Badge variant="destructive" className="ml-2">
+                              SIMULATION
+                            </Badge>
+                          )}
+                        </div>
+
+                        {analysisResult.isMock && (
+                          <div className="rounded-md border border-yellow-500/50 bg-yellow-500/10 p-3 text-sm text-yellow-600 dark:text-yellow-400">
+                            <p className="font-semibold">⚠️ AI Service Busy</p>
+                            <p>We hit the free tier rate limit. Results are simulated.</p>
+                          </div>
+                        )}
+
+                        <div className="space-y-3">
+                          {/* Species */}
+                          <div className="space-y-1">
+                            <Label>Detected Species</Label>
+                            <Input
+                              value={editableSpecies}
+                              onChange={(e) => setEditableSpecies(e.target.value)}
+                              className="bg-background"
+                            />
+                          </div>
+
+                          {/* Health */}
+                          <div className="space-y-1">
+                            <Label>Health Status</Label>
+                            <Select value={editableHealth} onValueChange={setEditableHealth}>
+                              <SelectTrigger className="bg-background">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Healthy">Healthy</SelectItem>
+                                <SelectItem value="Moderate">Moderate</SelectItem>
+                                <SelectItem value="Critical">Critical</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          {/* Metrics */}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1">
+                              <Label>Green Coverage (%)</Label>
+                              <Input
+                                type="number"
+                                value={editableGreenCoverage}
+                                onChange={(e) => setEditableGreenCoverage(Number(e.target.value))}
+                                className="bg-background"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label>Leaf Density (%)</Label>
+                              <Input
+                                type="number"
+                                value={editableLeafDensity}
+                                onChange={(e) => setEditableLeafDensity(Number(e.target.value))}
+                                className="bg-background"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="space-y-1">
+                            <Label>Water Needs</Label>
+                            <Select value={editableWaterNeeds} onValueChange={setEditableWaterNeeds}>
+                              <SelectTrigger className="bg-background">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Low">Low</SelectItem>
+                                <SelectItem value="Medium">Medium</SelectItem>
+                                <SelectItem value="High">High</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-2">
+                          <Button variant="outline" onClick={resetUpload} className="flex-1 bg-transparent">
+                            Retake
+                          </Button>
+                          <Button className="flex-1" onClick={saveTreeData}>
+                            Save Tree
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        {/* Info Card */}
+        <Card className="mb-6 border-[#2d5016]/20 bg-gradient-to-r from-[#2d5016]/5 to-white shadow-md">
+          <CardContent className="flex items-start gap-3 p-4">
+            <div className="p-2 rounded-lg bg-[#2d5016]/10">
+              <Info className="h-5 w-5 text-[#2d5016]" />
+            </div>
+            <div>
+              <p className="font-semibold text-[#1a3a1a]">How Tree Health is Determined</p>
+              <p className="mt-1 text-sm text-gray-600">
+                Our AI analyzes tree photos looking at <strong>green coverage</strong>,
+                <strong> leaf density</strong>, and <strong>color patterns</strong>.
+                Health status is categorized as Healthy (80%+ green coverage), Moderate (55-79%), or Critical (&lt;55%).
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Stats Summary */}
+        <div className="mb-6 grid gap-4 sm:grid-cols-4">
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#2d5016]/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Total Trees</p>
+                  <p className="text-3xl font-bold text-[#1a3a1a]">{stats.total}</p>
                 </div>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {/* Info Card - Keeping same */}
-      <Card className="mb-6 border-chart-2/30 bg-chart-2/5">
-        <CardContent className="flex items-start gap-3 p-4">
-          <Info className="mt-0.5 h-5 w-5 shrink-0 text-chart-2" />
-          <div>
-            <p className="font-medium text-foreground">How Tree Health is Determined</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Our AI analyzes tree photos looking at <strong>green coverage</strong>,
-              <strong> leaf density</strong>, and <strong>color patterns</strong>.
-              Health status is categorized as Healthy (80%+ green coverage), Moderate (55-79%), or Critical (&lt;55%).
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Stats Summary - Keeping same */}
-      <div className="mb-6 grid gap-4 sm:grid-cols-4">
-        {/* ... stats cards ... */}
-        {/* Reusing existing code structure heavily here for brevity in replacement block, 
-             but ensuring the stats logic remains accessible via the closure */}
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Trees</p>
-                <p className="text-2xl font-bold text-foreground">{stats.total}</p>
+                <div className="p-2 rounded-lg bg-[#2d5016]/10 group-hover:bg-[#d4af37]/20 transition-colors">
+                  <TreePine className="h-6 w-6 text-[#2d5016] group-hover:text-[#d4af37] transition-colors" />
+                </div>
               </div>
-              <TreePine className="h-8 w-8 text-primary/30" />
+            </CardContent>
+          </Card>
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Healthy</p>
+                  <p className="text-3xl font-bold text-[#2d5016]">{stats.healthy}</p>
+                </div>
+                <div className="h-4 w-4 rounded-full bg-[#2d5016] group-hover:scale-125 transition-transform" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#d4af37]/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Moderate</p>
+                  <p className="text-3xl font-bold text-[#d4af37]">{stats.moderate}</p>
+                </div>
+                <div className="h-4 w-4 rounded-full bg-[#d4af37] group-hover:scale-125 transition-transform" />
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-none bg-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/10 to-transparent rounded-bl-full" />
+            <CardContent className="p-4 relative z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 font-medium">Critical</p>
+                  <p className="text-3xl font-bold text-red-600">{stats.critical}</p>
+                </div>
+                <div className="h-4 w-4 rounded-full bg-red-600 group-hover:scale-125 transition-transform" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Filters */}
+        <Card className="mb-6 border-none shadow-md bg-white">
+          <CardContent className="p-4">
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Input
+                  placeholder="Search by ID, location, or species..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 border-gray-200 focus:border-[#d4af37] focus:ring-[#d4af37]"
+                />
+              </div>
+              <Select value={healthFilter} onValueChange={setHealthFilter}>
+                <SelectTrigger className="w-full sm:w-48 border-gray-200">
+                  <Filter className="mr-2 h-4 w-4" />
+                  <SelectValue placeholder="Filter by health" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="Healthy">Healthy</SelectItem>
+                  <SelectItem value="Moderate">Moderate</SelectItem>
+                  <SelectItem value="Critical">Critical</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
-        {/* ... other cards ... */}
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Healthy</p>
-                <p className="text-2xl font-bold text-primary">{stats.healthy}</p>
-              </div>
-              <div className="h-3 w-3 rounded-full bg-primary" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Moderate</p>
-                <p className="text-2xl font-bold text-chart-4">{stats.moderate}</p>
-              </div>
-              <div className="h-3 w-3 rounded-full bg-chart-4" />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="border-border bg-card">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Critical</p>
-                <p className="text-2xl font-bold text-destructive">{stats.critical}</p>
-              </div>
-              <div className="h-3 w-3 rounded-full bg-destructive" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
-      {/* Filters - Keeping same */}
-      <Card className="mb-6 border-border bg-card">
-        <CardContent className="p-4">
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Search by ID, location, or species..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Select value={healthFilter} onValueChange={setHealthFilter}>
-              <SelectTrigger className="w-full sm:w-48">
-                <Filter className="mr-2 h-4 w-4" />
-                <SelectValue placeholder="Filter by health" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="Healthy">Healthy</SelectItem>
-                <SelectItem value="Moderate">Moderate</SelectItem>
-                <SelectItem value="Critical">Critical</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Trees Grid - Keeping same */}
-      <Card className="border-border bg-card">
-        <CardHeader>
-          <CardTitle className="text-foreground">Trees ({filteredTrees.length})</CardTitle>
-          <CardDescription>Click on a tree to view details</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredTrees.map((tree) => (
-              <Card
-                key={tree.id || tree.tree_id} // Fallback key
-                className="cursor-pointer border-border bg-secondary/30 transition-all hover:border-primary/50 hover:shadow-md"
-              >
-                <CardContent className="p-4">
-                  <div className="mb-3 flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className={`h-2.5 w-2.5 rounded-full ${healthDots[tree.health] || 'bg-gray-400'}`} />
-                      <span className="font-mono text-sm font-medium text-foreground">{tree.tree_id}</span>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <Badge className={healthColors[tree.health] || ''}>
-                        {tree.health}
-                      </Badge>
-                      <Badge variant="outline" className="text-[10px] border-accent text-accent">
-                        Adoption Ready
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <TreePine className="h-4 w-4" />
-                      <span>{tree.species}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <MapPin className="h-4 w-4" />
-                      <span className="truncate">{tree.location}</span>
-                    </div>
-                    <div className="pt-2 border-t border-border mt-2 flex items-center justify-between">
-                      <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                        <Heart className="h-3 w-3" />
-                        Available
+        {/* Trees Grid */}
+        <Card className="border-none shadow-lg bg-white">
+          <CardHeader>
+            <CardTitle className="text-[#1a3a1a]">Trees ({filteredTrees.length})</CardTitle>
+            <CardDescription className="text-gray-600">Click on a tree to view details</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredTrees.map((tree) => (
+                <Card
+                  key={tree.id || tree.tree_id}
+                  className="cursor-pointer border-gray-200 bg-white transition-all duration-300 hover:border-[#d4af37] hover:shadow-xl hover:scale-102 group"
+                >
+                  <CardContent className="p-4">
+                    <div className="mb-3 flex items-start justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className={`h-2.5 w-2.5 rounded-full ${healthDots[tree.health] || 'bg-gray-400'} group-hover:scale-125 transition-transform`} />
+                        <span className="font-mono text-sm font-semibold text-[#1a3a1a]">{tree.tree_id}</span>
                       </div>
-                      <Button size="sm" variant="outline" className="h-7 text-[10px] border-primary text-primary hover:bg-primary/10">
-                        Adopt Me
-                      </Button>
+                      <div className="flex flex-col items-end gap-1">
+                        <Badge className={healthColors[tree.health] || ''}>
+                          {tree.health}
+                        </Badge>
+                        <Badge variant="outline" className="text-[10px] border-[#d4af37] text-[#d4af37] bg-[#d4af37]/5">
+                          Adoption Ready
+                        </Badge>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <TreePine className="h-4 w-4 text-[#2d5016]" />
+                        <span className="font-medium">{tree.species}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <MapPin className="h-4 w-4 text-[#d4af37]" />
+                        <span className="truncate">{tree.location}</span>
+                      </div>
+                      <div className="pt-2 border-t border-gray-100 mt-2 flex items-center justify-between">
+                        <div className="flex items-center gap-1 text-[10px] text-gray-500">
+                          <Heart className="h-3 w-3 text-red-400" />
+                          Available
+                        </div>
+                        <Button size="sm" className="h-7 text-[10px] bg-[#d4af37] text-[#1a3a1a] hover:bg-[#c9b037] font-semibold">
+                          Adopt Me
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

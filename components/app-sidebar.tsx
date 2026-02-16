@@ -20,13 +20,13 @@ export function AppSidebar() {
   const { user } = useUser()
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-[#2d5016] bg-[#1a3a1a] lg:flex">
       {/* Logo */}
-      <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sidebar-primary">
-          <Leaf className="h-5 w-5 text-sidebar-primary-foreground" />
+      <div className="flex h-16 items-center gap-2 border-b border-[#2d5016] px-6">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#d4af37]">
+          <Leaf className="h-5 w-5 text-[#1a3a1a]" />
         </div>
-        <span className="text-lg font-bold text-sidebar-foreground">ROOTSENSE</span>
+        <span className="text-lg font-bold text-white">ROOTSENSE</span>
       </div>
 
       {/* Navigation */}
@@ -38,13 +38,16 @@ export function AppSidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                  ? "bg-[#d4af37] text-[#1a3a1a] shadow-lg scale-105"
+                  : "text-[#e8e6d9] hover:bg-[#2d5016] hover:text-white hover:scale-102"
               )}
             >
-              <item.icon className="h-5 w-5" />
+              <item.icon className={cn(
+                "h-5 w-5 transition-transform duration-200",
+                isActive && "scale-110"
+              )} />
               {item.name}
             </Link>
           )
@@ -52,12 +55,12 @@ export function AppSidebar() {
       </nav>
 
       {/* Footer / User Profile */}
-      <div className="border-t border-sidebar-border p-4">
-        <div className="flex items-center gap-3 rounded-lg bg-sidebar-accent/10 p-3">
-          <UserButton afterSignOutUrl="/" showName />
+      <div className="border-t border-[#2d5016] p-4">
+        <div className="flex items-center gap-3 rounded-lg bg-[#2d5016]/50 p-3 transition-all duration-200 hover:bg-[#2d5016]">
+          <UserButton afterSignOutUrl="/" />
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-sidebar-foreground">{user?.fullName || "User"}</span>
-            <span className="text-xs text-sidebar-foreground/60">{user?.primaryEmailAddress?.emailAddress}</span>
+            <span className="text-sm font-medium text-white">{user?.fullName || "User"}</span>
+            <span className="text-xs text-[#e8e6d9]">{user?.primaryEmailAddress?.emailAddress}</span>
           </div>
         </div>
       </div>

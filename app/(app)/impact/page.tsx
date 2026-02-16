@@ -64,483 +64,499 @@ const rankColors = {
 
 export default function ImpactPage() {
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Impact & Scores</h1>
-        <p className="mt-1 text-muted-foreground">Environmental impact metrics and department rankings</p>
-      </div>
-
-      {/* Estimated Impact Summary - Calculated from Resolved Issues */}
-      <Card className="mb-8 border-primary/20 bg-primary/5">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-2">
-            <Calculator className="h-5 w-5 text-primary" />
-            <CardTitle className="text-foreground">Estimated Impact from Resolved Issues</CardTitle>
-          </div>
-          <CardDescription>
-            Real-time projections calculated from {impactTotals.issuesResolved} resolved civic issues
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {/* Water Saved */}
-            <div className="rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-chart-2/10">
-                  <Droplets className="h-5 w-5 text-chart-2" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Water Saved</p>
-                  <p className="text-xl font-bold text-chart-2">{impactTotals.waterSaved.toLocaleString()}L</p>
-                </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#faf8f3] via-white to-[#f5f5dc]">
+      {/* Hero Banner */}
+      <section
+        className="relative h-64 overflow-hidden"
+        style={{
+          backgroundImage: 'url(/green-mountains.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1a3a1a]/90 to-[#2d5016]/80" />
+        <div className="relative h-full flex flex-col justify-center px-8 lg:px-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+            Campus Impact Dashboard
+          </h1>
+          <p className="text-[#e8e6d9] text-lg mb-4 max-w-2xl">
+            Measuring our environmental footprint and celebrating sustainability achievements
+          </p>
+          <div className="flex flex-wrap gap-6 text-white">
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <TreePine className="h-5 w-5 text-green-400" />
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">
-                From fixing {resolvedIssuesData.filter(i => i.waterSaved > 0).length} water-related issues
-              </p>
+              <div>
+                <p className="text-2xl font-bold">1,247</p>
+                <p className="text-xs text-[#e8e6d9]">Trees Monitored</p>
+              </div>
             </div>
-
-            {/* CO2 Reduced */}
-            <div className="rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                  <Wind className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">CO2 Reduced</p>
-                  <p className="text-xl font-bold text-primary">{impactTotals.co2Reduced.toFixed(1)} kg</p>
-                </div>
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <Droplets className="h-5 w-5 text-blue-400" />
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">
-                Equivalent to planting {Math.round(impactTotals.co2Reduced / 21)} trees
-              </p>
+              <div>
+                <p className="text-2xl font-bold">24.5K</p>
+                <p className="text-xs text-[#e8e6d9]">Liters Saved</p>
+              </div>
             </div>
-
-            {/* Energy Saved */}
-            <div className="rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-chart-4/10">
-                  <Zap className="h-5 w-5 text-chart-4" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Energy Saved</p>
-                  <p className="text-xl font-bold text-chart-4">{impactTotals.energySaved.toLocaleString()} kWh</p>
-                </div>
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 rounded-lg bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <Wind className="h-5 w-5 text-emerald-400" />
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">
-                From solar lighting upgrades
-              </p>
-            </div>
-
-            {/* Waste Recycled */}
-            <div className="rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-chart-3/10">
-                  <Recycle className="h-5 w-5 text-chart-3" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Waste Recycled</p>
-                  <p className="text-xl font-bold text-chart-3">{impactTotals.wasteRecycled} kg</p>
-                </div>
+              <div>
+                <p className="text-2xl font-bold">{impactTotals.co2Reduced.toFixed(1)}kg</p>
+                <p className="text-xs text-[#e8e6d9]">CO2 Reduced</p>
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">
-                E-waste and organic materials
-              </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Recent Impact Contributions */}
-          <div className="mt-6">
-            <h4 className="mb-3 text-sm font-medium text-foreground">Recent Resolved Issues Contributing to Impact</h4>
-            <div className="space-y-2">
-              {resolvedIssuesData.slice(0, 5).map((issue) => (
-                <div key={issue.id} className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2 text-sm">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary" />
-                    <span className="text-foreground">{issue.description}</span>
+      <div className="p-4 sm:p-6 lg:p-8">
+
+        {/* Estimated Impact Summary */}
+        <Card className="mb-8 border-none bg-gradient-to-r from-[#2d5016]/5 to-white shadow-lg">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-2">
+              <Calculator className="h-5 w-5 text-[#2d5016]" />
+              <CardTitle className="text-[#1a3a1a]">Estimated Impact from Resolved Issues</CardTitle>
+            </div>
+            <CardDescription className="text-gray-600">
+              Real-time projections calculated from {impactTotals.issuesResolved} resolved civic issues
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {/* Water Saved */}
+              <div className="rounded-lg border border-gray-200 bg-white p-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10">
+                    <Droplets className="h-5 w-5 text-blue-600" />
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    {issue.waterSaved > 0 && (
-                      <span className="flex items-center gap-1">
-                        <Droplets className="h-3 w-3 text-chart-2" />
-                        {issue.waterSaved.toLocaleString()}L
-                      </span>
-                    )}
-                    <span className="flex items-center gap-1">
-                      <Wind className="h-3 w-3 text-primary" />
-                      {issue.co2Reduced}kg CO2
-                    </span>
+                  <div>
+                    <p className="text-xs text-gray-600">Water Saved</p>
+                    <p className="text-xl font-bold text-blue-600">{impactTotals.waterSaved.toLocaleString()}L</p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+                <p className="mt-2 text-xs text-gray-600">
+                  From fixing {resolvedIssuesData.filter(i => i.waterSaved > 0).length} water-related issues
+                </p>
+              </div>
 
-      {/* Impact Cards */}
-      <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {/* Tree Survival Rate */}
-        <Card className="border-border bg-card">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg text-foreground">Tree Survival Rate</CardTitle>
-              <TreePine className="h-6 w-6 text-primary" />
-            </div>
-            <CardDescription>Percentage of monitored trees thriving</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-2 flex items-end gap-2">
-              <span className="text-4xl font-bold text-primary">89%</span>
-              <span className="mb-1 flex items-center text-sm text-primary">
-                <TrendingUp className="mr-1 h-4 w-4" />
-                +3% this month
-              </span>
-            </div>
-            <Progress value={89} className="h-3 bg-muted" />
-            <div className="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
-              <div className="rounded-lg bg-primary/10 p-2">
-                <div className="font-semibold text-primary">1,110</div>
-                <div className="text-xs text-muted-foreground">Healthy</div>
+              {/* CO2 Reduced */}
+              <div className="rounded-lg border border-gray-200 bg-white p-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2d5016]/10">
+                    <Wind className="h-5 w-5 text-[#2d5016]" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-600">CO2 Reduced</p>
+                    <p className="text-xl font-bold text-[#2d5016]">{impactTotals.co2Reduced.toFixed(1)} kg</p>
+                  </div>
+                </div>
+                <p className="mt-2 text-xs text-gray-600">
+                  Equivalent to planting {Math.round(impactTotals.co2Reduced / 21)} trees
+                </p>
               </div>
-              <div className="rounded-lg bg-chart-4/10 p-2">
-                <div className="font-semibold text-chart-4">95</div>
-                <div className="text-xs text-muted-foreground">Moderate</div>
-              </div>
-              <div className="rounded-lg bg-destructive/10 p-2">
-                <div className="font-semibold text-destructive">42</div>
-                <div className="text-xs text-muted-foreground">Critical</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Water Saved */}
-        <Card className="border-border bg-card">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg text-foreground">Water Saved</CardTitle>
-              <Droplets className="h-6 w-6 text-chart-2" />
-            </div>
-            <CardDescription>Estimated water conservation this year</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-2 flex items-end gap-2">
-              <span className="text-4xl font-bold text-chart-2">24,560</span>
-              <span className="mb-1 text-lg text-muted-foreground">Liters</span>
-            </div>
-            <Progress value={65} className="h-3 bg-muted" />
-            <p className="mt-2 text-sm text-muted-foreground">65% of yearly target (38,000L)</p>
-            <div className="mt-4 grid grid-cols-2 gap-2 text-center text-sm">
-              <div className="rounded-lg bg-chart-2/10 p-2">
-                <div className="font-semibold text-chart-2">18,200L</div>
-                <div className="text-xs text-muted-foreground">Smart Irrigation</div>
+              {/* Energy Saved */}
+              <div className="rounded-lg border border-gray-200 bg-white p-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d4af37]/10">
+                    <Zap className="h-5 w-5 text-[#d4af37]" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-600">Energy Saved</p>
+                    <p className="text-xl font-bold text-[#d4af37]">{impactTotals.energySaved.toLocaleString()} kWh</p>
+                  </div>
+                </div>
+                <p className="mt-2 text-xs text-gray-600">
+                  From solar lighting upgrades
+                </p>
               </div>
-              <div className="rounded-lg bg-chart-2/10 p-2">
-                <div className="font-semibold text-chart-2">6,360L</div>
-                <div className="text-xs text-muted-foreground">Leak Repairs</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Issues Resolved */}
-        <Card className="border-border bg-card">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg text-foreground">Issues Resolved</CardTitle>
-              <CheckCircle2 className="h-6 w-6 text-chart-3" />
-            </div>
-            <CardDescription>Civic issues addressed this year</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-2 flex items-end gap-2">
-              <span className="text-4xl font-bold text-chart-3">156</span>
-              <span className="mb-1 flex items-center text-sm text-chart-3">
-                <TrendingUp className="mr-1 h-4 w-4" />
-                +12 this week
-              </span>
-            </div>
-            <Progress value={78} className="h-3 bg-muted" />
-            <p className="mt-2 text-sm text-muted-foreground">78% resolution rate (156/200 total)</p>
-            <div className="mt-4 grid grid-cols-3 gap-2 text-center text-sm">
-              <div className="rounded-lg bg-chart-3/10 p-2">
-                <div className="font-semibold text-chart-3">52</div>
-                <div className="text-xs text-muted-foreground">High</div>
-              </div>
-              <div className="rounded-lg bg-chart-3/10 p-2">
-                <div className="font-semibold text-chart-3">68</div>
-                <div className="text-xs text-muted-foreground">Medium</div>
-              </div>
-              <div className="rounded-lg bg-chart-3/10 p-2">
-                <div className="font-semibold text-chart-3">36</div>
-                <div className="text-xs text-muted-foreground">Low</div>
+              {/* Waste Recycled */}
+              <div className="rounded-lg border border-gray-200 bg-white p-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">
+                    <Recycle className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-600">Waste Recycled</p>
+                    <p className="text-xl font-bold text-green-600">{impactTotals.wasteRecycled} kg</p>
+                  </div>
+                </div>
+                <p className="mt-2 text-xs text-gray-600">
+                  E-waste and organic materials
+                </p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
 
-      {/* Overall Green Score */}
-      <Card className="mb-8 border-border bg-card">
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div>
-              <CardTitle className="text-foreground">Campus Green Score</CardTitle>
-              <CardDescription>Overall sustainability rating based on all metrics</CardDescription>
-            </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
-                    <Info className="h-4 w-4" />
-                    <span className="sr-only">How is this calculated?</span>
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="left" className="max-w-xs">
-                  <p className="text-sm">
-                    <strong>Green Score = </strong>
-                    Tree Health (30%) + Water Conservation (25%) + Issue Response (25%) + Community Engagement (20%)
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col items-center justify-center gap-4 py-4 sm:flex-row sm:gap-12">
-            <div className="text-center">
-              <div className="relative mx-auto mb-4 flex h-32 w-32 items-center justify-center">
-                <svg className="h-32 w-32 -rotate-90 transform">
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    className="text-muted"
-                  />
-                  <circle
-                    cx="64"
-                    cy="64"
-                    r="56"
-                    stroke="currentColor"
-                    strokeWidth="12"
-                    fill="none"
-                    strokeDasharray={351.86}
-                    strokeDashoffset={351.86 * (1 - 0.87)}
-                    strokeLinecap="round"
-                    className="text-primary"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl font-bold text-primary">87</span>
-                  <span className="text-sm text-muted-foreground">/100</span>
-                </div>
-              </div>
-              <Badge className="bg-primary text-primary-foreground">Excellent</Badge>
-            </div>
-            <div className="flex-1 space-y-4">
-              <div>
-                <div className="mb-1 flex justify-between text-sm">
-                  <span className="text-muted-foreground">Tree Health</span>
-                  <span className="font-medium text-foreground">89/100</span>
-                </div>
-                <Progress value={89} className="h-2 bg-muted" />
-              </div>
-              <div>
-                <div className="mb-1 flex justify-between text-sm">
-                  <span className="text-muted-foreground">Water Conservation</span>
-                  <span className="font-medium text-foreground">85/100</span>
-                </div>
-                <Progress value={85} className="h-2 bg-muted" />
-              </div>
-              <div>
-                <div className="mb-1 flex justify-between text-sm">
-                  <span className="text-muted-foreground">Issue Response</span>
-                  <span className="font-medium text-foreground">78/100</span>
-                </div>
-                <Progress value={78} className="h-2 bg-muted" />
-              </div>
-              <div>
-                <div className="mb-1 flex justify-between text-sm">
-                  <span className="text-muted-foreground">Community Engagement</span>
-                  <span className="font-medium text-foreground">92/100</span>
-                </div>
-                <Progress value={92} className="h-2 bg-muted" />
-                <div className="mt-2 grid grid-cols-2 gap-2 text-[10px] text-muted-foreground">
-                  <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-primary" /> Public Health: +12%</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-primary" /> Property Value: +$2.4M</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-primary" /> Social Equity: High</span>
-                  <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-primary" /> Event Participation: 84%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Achievements & Badges (NEW) */}
-      <div className="mb-8 grid gap-6 lg:grid-cols-2">
-        <Card className="border-border bg-card">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-yellow-500" />
-              <CardTitle className="text-foreground">Sustainabilty Milestones</CardTitle>
-            </div>
-            <CardDescription>Major campus-wide achievements reached</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4 rounded-lg border border-border bg-secondary/30 p-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-yellow-500/10 text-yellow-500">
-                <Medal className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="font-bold text-foreground font-mono">1K TREES MILESTONE</p>
-                <p className="text-xs text-muted-foreground text-balance">Campus reached 1,000+ monitored trees. Status: COMPLETED</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 rounded-lg border border-border bg-secondary/30 p-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-blue-500">
-                <Droplets className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="font-bold text-foreground font-mono">WATER SAVER PRO</p>
-                <p className="text-xs text-muted-foreground text-balance">Saved 10,000L through leak reporting. Status: COMPLETED</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 rounded-lg border border-primary/20 bg-primary/5 p-3 animate-pulse">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Zap className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="font-bold text-primary font-mono">ZERO WASTE CHALLENGE</p>
-                <p className="text-xs text-muted-foreground text-balance">Ongoing monthly goal: Reduce waste by 15%. Status: IN PROGRESS (82%)</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border bg-card">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <Medal className="h-5 w-5 text-primary" />
-              <CardTitle className="text-foreground">Top Volunteer Badges</CardTitle>
-            </div>
-            <CardDescription>Recognition for outstanding contributors</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-card border border-border rounded-xl hover:border-primary/50 group">
-                <div className="mb-2 p-3 bg-primary/10 rounded-full group-hover:scale-110 transition-transform">
-                  <TreePine className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-xs font-bold font-mono">TREE GUARDIAN</p>
-                <p className="text-[10px] text-muted-foreground mt-1">Adopted & maintained 5+ trees</p>
-              </div>
-              <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-card border border-border rounded-xl hover:border-accent/50 group">
-                <div className="mb-2 p-3 bg-accent/10 rounded-full group-hover:scale-110 transition-transform">
-                  <AlertTriangle className="h-6 w-6 text-accent" />
-                </div>
-                <p className="text-xs font-bold font-mono">ISSUE SOLVER</p>
-                <p className="text-[10px] text-muted-foreground mt-1">Reported 10+ civic issues</p>
-              </div>
-              <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-card border border-border rounded-xl hover:border-blue-500/50 group opacity-50 grayscale">
-                <div className="mb-2 p-3 bg-blue-500/10 rounded-full">
-                  <Wind className="h-6 w-6 text-blue-500" />
-                </div>
-                <p className="text-xs font-bold font-mono">AIR PURIFIER</p>
-                <p className="text-[10px] text-muted-foreground mt-1">LOCKED: Reduce campus AQI by 5%</p>
-              </div>
-              <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-card border border-border rounded-xl hover:border-yellow-500/50 group opacity-50 grayscale">
-                <div className="mb-2 p-3 bg-yellow-500/10 rounded-full">
-                  <Award className="h-6 w-6 text-yellow-500" />
-                </div>
-                <p className="text-xs font-bold font-mono">LEADERSHIP GOLD</p>
-                <p className="text-[10px] text-muted-foreground mt-1">LOCKED: Lead a department to #1</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Leaderboard */}
-      <Card className="border-border bg-card">
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div>
-              <CardTitle className="text-foreground">Department & Hostel Leaderboard</CardTitle>
-              <CardDescription>Rankings based on sustainability contributions</CardDescription>
-            </div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
-                    <Info className="h-4 w-4" />
-                    <span className="sr-only">How are rankings calculated?</span>
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="left" className="max-w-xs">
-                  <p className="text-sm">
-                    <strong>Ranking factors: </strong>
-                    Trees monitored (40 pts), Issues reported and resolved (30 pts), Active volunteers (20 pts), Water saved (10 pts)
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border text-left text-sm text-muted-foreground">
-                  <th className="pb-3 pr-4 font-medium">Rank</th>
-                  <th className="pb-3 pr-4 font-medium">Department/Hostel</th>
-                  <th className="pb-3 pr-4 font-medium text-right">Score</th>
-                  <th className="hidden pb-3 pr-4 font-medium text-right sm:table-cell">Trees</th>
-                  <th className="hidden pb-3 pr-4 font-medium text-right md:table-cell">Issues</th>
-                  <th className="pb-3 font-medium text-right">Volunteers</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {leaderboardData.map((entry) => {
-                  const RankIcon = rankIcons[entry.rank as keyof typeof rankIcons]
-                  const rankColor = rankColors[entry.rank as keyof typeof rankColors]
-                  return (
-                    <tr
-                      key={entry.rank}
-                      className={`text-sm ${entry.rank <= 3 ? "bg-secondary/30" : ""}`}
-                    >
-                      <td className="py-3 pr-4">
-                        <div className="flex items-center gap-2">
-                          {RankIcon ? (
-                            <RankIcon className={`h-5 w-5 ${rankColor}`} />
-                          ) : (
-                            <span className="flex h-5 w-5 items-center justify-center text-muted-foreground">
-                              {entry.rank}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-3 pr-4 font-medium text-foreground">{entry.name}</td>
-                      <td className="py-3 pr-4 text-right">
-                        <span className={`font-semibold ${entry.rank <= 3 ? "text-primary" : "text-foreground"}`}>
-                          {entry.score}
+            {/* Recent Impact Contributions */}
+            <div className="mt-6">
+              <h4 className="mb-3 text-sm font-medium text-[#1a3a1a]">Recent Resolved Issues Contributing to Impact</h4>
+              <div className="space-y-2">
+                {resolvedIssuesData.slice(0, 5).map((issue) => (
+                  <div key={issue.id} className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm transition-all hover:bg-gray-100">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-[#2d5016]" />
+                      <span className="text-[#1a3a1a]">{issue.description}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-gray-600">
+                      {issue.waterSaved > 0 && (
+                        <span className="flex items-center gap-1">
+                          <Droplets className="h-3 w-3 text-blue-600" />
+                          {issue.waterSaved.toLocaleString()}L
                         </span>
-                      </td>
-                      <td className="hidden py-3 pr-4 text-right text-muted-foreground sm:table-cell">{entry.trees}</td>
-                      <td className="hidden py-3 pr-4 text-right text-muted-foreground md:table-cell">{entry.issues}</td>
-                      <td className="py-3 text-right text-muted-foreground">{entry.volunteers}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+                      )}
+                      <span className="flex items-center gap-1">
+                        <Wind className="h-3 w-3 text-[#2d5016]" />
+                        {issue.co2Reduced}kg CO2
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Colorful Feature Cards - Inspired by Reference */}
+        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Tree Survival - Green Gradient */}
+          <Card className="border-none shadow-xl overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-2xl relative min-h-[240px]">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-green-700 opacity-95 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="relative h-full flex flex-col justify-between p-6 text-white">
+              <div>
+                <TreePine className="h-12 w-12 mb-3 opacity-90" />
+                <h3 className="text-lg font-semibold mb-1">Tree Survival</h3>
+                <p className="text-sm opacity-90">Campus Wide</p>
+              </div>
+              <div className="mt-4">
+                <p className="text-5xl font-bold mb-2">89%</p>
+                <p className="text-sm opacity-90 flex items-center gap-1">
+                  <TrendingUp className="h-4 w-4" />
+                  +3% this month
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Water Conservation - Blue Gradient */}
+          <Card className="border-none shadow-xl overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-2xl relative min-h-[240px]">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-700 opacity-95 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="relative h-full flex flex-col justify-between p-6 text-white">
+              <div>
+                <Droplets className="h-12 w-12 mb-3 opacity-90" />
+                <h3 className="text-lg font-semibold mb-1">Water Saved</h3>
+                <p className="text-sm opacity-90">This Year</p>
+              </div>
+              <div className="mt-4">
+                <p className="text-5xl font-bold mb-2">24.5K</p>
+                <p className="text-sm opacity-90">Liters conserved</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Issue Resolution - Purple Gradient */}
+          <Card className="border-none shadow-xl overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-2xl relative min-h-[240px]">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-violet-700 opacity-95 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="relative h-full flex flex-col justify-between p-6 text-white">
+              <div>
+                <CheckCircle2 className="h-12 w-12 mb-3 opacity-90" />
+                <h3 className="text-lg font-semibold mb-1">Issues Resolved</h3>
+                <p className="text-sm opacity-90">Civic Actions</p>
+              </div>
+              <div className="mt-4">
+                <p className="text-5xl font-bold mb-2">156</p>
+                <p className="text-sm opacity-90 flex items-center gap-1">
+                  <TrendingUp className="h-4 w-4" />
+                  +12 this week
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Green Score - Gold Gradient */}
+          <Card className="border-none shadow-xl overflow-hidden cursor-pointer group transition-all duration-300 hover:scale-105 hover:shadow-2xl relative min-h-[240px]">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-yellow-600 opacity-95 group-hover:opacity-100 transition-opacity" />
+            <CardContent className="relative h-full flex flex-col justify-between p-6 text-white">
+              <div>
+                <Trophy className="h-12 w-12 mb-3 opacity-90" />
+                <h3 className="text-lg font-semibold mb-1">Green Score</h3>
+                <p className="text-sm opacity-90">Overall Rating</p>
+              </div>
+              <div className="mt-4">
+                <p className="text-5xl font-bold mb-2">87</p>
+                <p className="text-sm opacity-90">Excellent status</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Overall Green Score */}
+        <Card className="mb-8 border-none bg-white shadow-lg">
+          <CardHeader>
+            <div className="flex items-start justify-between">
+              <div>
+                <CardTitle className="text-[#1a3a1a]">Campus Green Score</CardTitle>
+                <CardDescription className="text-gray-600">Overall sustainability rating based on all metrics</CardDescription>
+              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="rounded-full p-1 text-gray-600 hover:bg-gray-100 hover:text-[#1a3a1a]">
+                      <Info className="h-4 w-4" />
+                      <span className="sr-only">How is this calculated?</span>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="left" className="max-w-xs">
+                    <p className="text-sm">
+                      <strong>Green Score = </strong>
+                      Tree Health (30%) + Water Conservation (25%) + Issue Response (25%) + Community Engagement (20%)
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center justify-center gap-4 py-4 sm:flex-row sm:gap-12">
+              <div className="text-center">
+                <div className="relative mx-auto mb-4 flex h-32 w-32 items-center justify-center">
+                  <svg className="h-32 w-32 -rotate-90 transform">
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r="56"
+                      stroke="currentColor"
+                      strokeWidth="12"
+                      fill="none"
+                      className="text-gray-200"
+                    />
+                    <circle
+                      cx="64"
+                      cy="64"
+                      r="56"
+                      stroke="currentColor"
+                      strokeWidth="12"
+                      fill="none"
+                      strokeDasharray={351.86}
+                      strokeDashoffset={351.86 * (1 - 0.87)}
+                      strokeLinecap="round"
+                      className="text-[#2d5016]"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-4xl font-bold text-[#2d5016]">87</span>
+                    <span className="text-sm text-gray-600">/100</span>
+                  </div>
+                </div>
+                <Badge className="bg-[#2d5016] text-white">Excellent</Badge>
+              </div>
+              <div className="flex-1 space-y-4">
+                <div>
+                  <div className="mb-1 flex justify-between text-sm">
+                    <span className="text-gray-600">Tree Health</span>
+                    <span className="font-medium text-[#1a3a1a]">89/100</span>
+                  </div>
+                  <Progress value={89} className="h-2 bg-gray-200" />
+                </div>
+                <div>
+                  <div className="mb-1 flex justify-between text-sm">
+                    <span className="text-gray-600">Water Conservation</span>
+                    <span className="font-medium text-[#1a3a1a]">85/100</span>
+                  </div>
+                  <Progress value={85} className="h-2 bg-gray-200" />
+                </div>
+                <div>
+                  <div className="mb-1 flex justify-between text-sm">
+                    <span className="text-gray-600">Issue Response</span>
+                    <span className="font-medium text-[#1a3a1a]">78/100</span>
+                  </div>
+                  <Progress value={78} className="h-2 bg-gray-200" />
+                </div>
+                <div>
+                  <div className="mb-1 flex justify-between text-sm">
+                    <span className="text-gray-600">Community Engagement</span>
+                    <span className="font-medium text-[#1a3a1a]">92/100</span>
+                  </div>
+                  <Progress value={92} className="h-2 bg-gray-200" />
+                  <div className="mt-2 grid grid-cols-2 gap-2 text-[10px] text-gray-600">
+                    <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-[#2d5016]" /> Public Health: +12%</span>
+                    <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-[#2d5016]" /> Property Value: +$2.4M</span>
+                    <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-[#2d5016]" /> Social Equity: High</span>
+                    <span className="flex items-center gap-1"><CheckCircle2 className="h-2.5 w-2.5 text-[#2d5016]" /> Event Participation: 84%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Achievements & Badges (NEW) */}
+        <div className="mb-8 grid gap-6 lg:grid-cols-2">
+          <Card className="border-none bg-white shadow-lg">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-yellow-500" />
+                <CardTitle className="text-[#1a3a1a]">Sustainabilty Milestones</CardTitle>
+              </div>
+              <CardDescription className="text-gray-600">Major campus-wide achievements reached</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-gradient-to-r from-yellow-50 to-white p-3 transition-all hover:shadow-md">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-yellow-500/10 text-yellow-500">
+                  <Medal className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="font-bold text-[#1a3a1a] font-mono">1K TREES MILESTONE</p>
+                  <p className="text-xs text-gray-600 text-balance">Campus reached 1,000+ monitored trees. Status: COMPLETED</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-gradient-to-r from-blue-50 to-white p-3 transition-all hover:shadow-md">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-blue-500">
+                  <Droplets className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="font-bold text-[#1a3a1a] font-mono">WATER SAVER PRO</p>
+                  <p className="text-xs text-gray-600 text-balance">Saved 10,000L through leak reporting. Status: COMPLETED</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 rounded-lg border-2 border-[#2d5016]/30 bg-gradient-to-r from-[#2d5016]/5 to-white p-3 animate-pulse">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#2d5016]/10 text-[#2d5016]">
+                  <Zap className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="font-bold text-[#2d5016] font-mono">ZERO WASTE CHALLENGE</p>
+                  <p className="text-xs text-gray-600 text-balance">Ongoing monthly goal: Reduce waste by 15%. Status: IN PROGRESS (82%)</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none bg-white shadow-lg">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Medal className="h-5 w-5 text-[#d4af37]" />
+                <CardTitle className="text-[#1a3a1a]">Top Volunteer Badges</CardTitle>
+              </div>
+              <CardDescription className="text-gray-600">Recognition for outstanding contributors</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-white border-2 border-[#2d5016]/30 rounded-xl hover:border-[#2d5016] hover:shadow-lg group">
+                  <div className="mb-2 p-3 bg-[#2d5016]/10 rounded-full group-hover:scale-110 transition-transform">
+                    <TreePine className="h-6 w-6 text-[#2d5016]" />
+                  </div>
+                  <p className="text-xs font-bold font-mono text-[#1a3a1a]">TREE GUARDIAN</p>
+                  <p className="text-[10px] text-gray-600 mt-1">Adopted & maintained 5+ trees</p>
+                </div>
+                <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-white border-2 border-[#d4af37]/30 rounded-xl hover:border-[#d4af37] hover:shadow-lg group">
+                  <div className="mb-2 p-3 bg-[#d4af37]/10 rounded-full group-hover:scale-110 transition-transform">
+                    <AlertTriangle className="h-6 w-6 text-[#d4af37]" />
+                  </div>
+                  <p className="text-xs font-bold font-mono text-[#1a3a1a]">ISSUE SOLVER</p>
+                  <p className="text-[10px] text-gray-600 mt-1">Reported 10+ civic issues</p>
+                </div>
+                <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-white border-2 border-gray-200 rounded-xl opacity-50 grayscale">
+                  <div className="mb-2 p-3 bg-blue-500/10 rounded-full">
+                    <Wind className="h-6 w-6 text-blue-500" />
+                  </div>
+                  <p className="text-xs font-bold font-mono text-gray-600">AIR PURIFIER</p>
+                  <p className="text-[10px] text-gray-600 mt-1">LOCKED: Reduce campus AQI by 5%</p>
+                </div>
+                <div className="flex flex-col items-center justify-center p-3 text-center transition-all bg-white border-2 border-gray-200 rounded-xl opacity-50 grayscale">
+                  <div className="mb-2 p-3 bg-yellow-500/10 rounded-full">
+                    <Award className="h-6 w-6 text-yellow-500" />
+                  </div>
+                  <p className="text-xs font-bold font-mono text-gray-600">LEADERSHIP GOLD</p>
+                  <p className="text-[10px] text-gray-600 mt-1">LOCKED: Lead a department to #1</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Leaderboard */}
+        <Card className="border-none bg-white shadow-lg">
+          <CardHeader>
+            <div className="flex items-start justify-between">
+              <div>
+                <CardTitle className="text-[#1a3a1a]">Department & Hostel Leaderboard</CardTitle>
+                <CardDescription className="text-gray-600">Rankings based on sustainability contributions</CardDescription>
+              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="rounded-full p-1 text-gray-600 hover:bg-gray-100 hover:text-[#1a3a1a]">
+                      <Info className="h-4 w-4" />
+                      <span className="sr-only">How are rankings calculated?</span>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="left" className="max-w-xs">
+                    <p className="text-sm">
+                      <strong>Ranking factors: </strong>
+                      Trees monitored (40 pts), Issues reported and resolved (30 pts), Active volunteers (20 pts), Water saved (10 pts)
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200 text-left text-sm text-gray-600">
+                    <th className="pb-3 pr-4 font-medium">Rank</th>
+                    <th className="pb-3 pr-4 font-medium">Department/Hostel</th>
+                    <th className="pb-3 pr-4 font-medium text-right">Score</th>
+                    <th className="hidden pb-3 pr-4 font-medium text-right sm:table-cell">Trees</th>
+                    <th className="hidden pb-3 pr-4 font-medium text-right md:table-cell">Issues</th>
+                    <th className="pb-3 font-medium text-right">Volunteers</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {leaderboardData.map((entry) => {
+                    const RankIcon = rankIcons[entry.rank as keyof typeof rankIcons]
+                    const rankColor = rankColors[entry.rank as keyof typeof rankColors]
+                    return (
+                      <tr
+                        key={entry.rank}
+                        className={`text-sm transition-all hover:bg-gray-50 ${entry.rank <= 3 ? "bg-gradient-to-r from-[#d4af37]/5 to-transparent" : ""}`}
+                      >
+                        <td className="py-3 pr-4">
+                          <div className="flex items-center gap-2">
+                            {RankIcon ? (
+                              <RankIcon className={`h-5 w-5 ${rankColor}`} />
+                            ) : (
+                              <span className="flex h-5 w-5 items-center justify-center text-gray-600">
+                                {entry.rank}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-3 pr-4 font-medium text-[#1a3a1a]">{entry.name}</td>
+                        <td className="py-3 pr-4 text-right">
+                          <span className={`font-semibold ${entry.rank <= 3 ? "text-[#d4af37]" : "text-[#1a3a1a]"}`}>
+                            {entry.score}
+                          </span>
+                        </td>
+                        <td className="hidden py-3 pr-4 text-right text-gray-600 sm:table-cell">{entry.trees}</td>
+                        <td className="hidden py-3 pr-4 text-right text-gray-600 md:table-cell">{entry.issues}</td>
+                        <td className="py-3 text-right text-gray-600">{entry.volunteers}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
