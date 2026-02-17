@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AlertTriangle, Send, MapPin, Clock, CheckCircle2, Circle, AlertCircle, Loader2, Sparkles, Zap } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -168,11 +168,42 @@ export default function IssuesPage() {
     confidence: number
   } | null>(null)
 
+  const [issues, setIssues] = useState(issuesData)
+
+  // Load issues from LocalStorage on mount and listen for changes
+  useEffect(() => {
+    const loadIssues = () => {
+      const savedIssues = localStorage.getItem('civicIssues')
+      if (savedIssues) {
+        try {
+          const parsed = JSON.parse(savedIssues)
+          if (parsed.length > 0) {
+            setIssues(parsed)
+          }
+        } catch (e) {
+          console.error("Failed to parse issues from localStorage", e)
+        }
+      }
+    }
+
+    loadIssues()
+
+    // Listen for storage events (updates from Admin panel)
+    window.addEventListener('storage', loadIssues)
+    // Custom event dispatch for same-window updates
+    window.addEventListener('civicIssuesUpdated', loadIssues)
+
+    return () => {
+      window.removeEventListener('storage', loadIssues)
+      window.removeEventListener('civicIssuesUpdated', loadIssues)
+    }
+  }, [])
+
   const stats = {
-    total: issuesData.length,
-    open: issuesData.filter((i) => i.status === "Open" || i.status === "In Progress").length,
-    resolved: issuesData.filter((i) => i.status === "Resolved").length,
-    highPriority: issuesData.filter((i) => i.priority === "High" && i.status !== "Resolved").length,
+    total: issues.length,
+    open: issues.filter((i) => i.status === "Open" || i.status === "In Progress").length,
+    resolved: issues.filter((i) => i.status === "Resolved").length,
+    highPriority: issues.filter((i) => i.priority === "High" && i.status !== "Resolved").length,
   }
 
   // Trigger AI analysis when description changes (with debounce simulation)
@@ -206,8 +237,28 @@ export default function IssuesPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Mock submission - would connect to backend
-    alert("Issue reported successfully! Assigned ID: #" + (issuesData.length + 1))
+
+    // Create new issue object
+    const newIssue = {
+      id: issues.length + 1,
+      type: issueType || "Other",
+      description: description,
+      location: location || "Other",
+      status: "Open",
+      priority: priority || "Medium",
+      reportedAt: new Date().toISOString().split('T')[0],
+      reportedBy: "You (Demo User)"
+    }
+
+    // Update state and persistence
+    const updatedIssues = [newIssue, ...issues]
+    setIssues(updatedIssues)
+    localStorage.setItem('civicIssues', JSON.stringify(updatedIssues))
+
+    // Notify other components
+    window.dispatchEvent(new Event('civicIssuesUpdated'))
+
+    alert("Issue reported successfully! It has been saved to the list.")
     setDescription("")
     setLocation("")
     setIssueType("")
@@ -454,7 +505,7 @@ export default function IssuesPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {issuesData.map((issue) => {
+                {issues.map((issue) => {
                   const StatusIcon = statusIcons[issue.status as keyof typeof statusIcons]
                   return (
                     <div

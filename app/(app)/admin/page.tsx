@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { CivicIssue } from "@/lib/mock-data"
 
 import {
     Users,
@@ -25,7 +26,8 @@ import {
     TrendingUp,
     TrendingDown,
     Server,
-    Globe
+    Globe,
+    MapPin
 } from "lucide-react"
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip as RechartsTooltip, XAxis, YAxis, Cell, PieChart, Pie } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
@@ -113,6 +115,19 @@ export default function AdminDashboardPage() {
         { id: 3, submittedBy: "Sneha Patel", location: "Library Lawn", species: "Neem", time: "5 hours ago", status: "Pending" },
     ])
 
+    const [issues, setIssues] = useState<CivicIssue[]>([])
+
+    useEffect(() => {
+        const savedIssues = localStorage.getItem('civicIssues')
+        if (savedIssues) {
+            try {
+                setIssues(JSON.parse(savedIssues))
+            } catch (e) {
+                console.error("Failed to parse issues", e)
+            }
+        }
+    }, [])
+
     const [broadcastMessage, setBroadcastMessage] = useState("")
     const [isSending, setIsSending] = useState(false)
 
@@ -123,6 +138,18 @@ export default function AdminDashboardPage() {
 
     const handleRejectTree = (id: number) => {
         setTrees(trees.filter(t => t.id !== id))
+    }
+
+    const handleUpdateStatus = (id: number, newStatus: "In Progress" | "Resolved") => {
+        const updatedIssues = issues.map(issue =>
+            issue.id === id ? { ...issue, status: newStatus } : issue
+        )
+        setIssues(updatedIssues)
+        localStorage.setItem('civicIssues', JSON.stringify(updatedIssues))
+
+        // Trigger a custom event so other components (if listening) or just to be safe
+        window.dispatchEvent(new Event('storage'))
+        window.dispatchEvent(new Event('civicIssuesUpdated'))
     }
 
     const handleSendBroadcast = () => {
@@ -182,7 +209,7 @@ export default function AdminDashboardPage() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-bold text-slate-900">{trees.length}</div>
+                        <div className="text-3xl font-bold text-slate-900">{trees.length + issues.length}</div>
                         <p className="mt-2 text-xs text-slate-600">Requires attention</p>
                     </CardContent>
                 </Card>
@@ -340,12 +367,69 @@ export default function AdminDashboardPage() {
                                 <CardTitle className="text-slate-900">Flagged Issues</CardTitle>
                                 <CardDescription className="text-slate-600">Review items reported by the community</CardDescription>
                             </CardHeader>
-                            <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                                <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center mb-4">
-                                    <CheckCircle className="h-6 w-6 text-emerald-600" />
+                            <CardContent>
+                                <div className="space-y-4">
+                                    {issues.length > 0 ? (
+                                        issues.map((issue) => (
+                                            <div key={issue.id} className="flex flex-col gap-3 p-4 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors sm:flex-row sm:items-center sm:justify-between">
+                                                <div className="flex flex-col">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="font-bold text-slate-900">{issue.type}</span>
+                                                        <Badge variant="outline" className={`text-xs ${issue.priority === 'High' ? 'text-red-600 border-red-200 bg-red-50' : 'text-slate-600'
+                                                            }`}>{issue.priority}</Badge>
+                                                        <Badge className={`text-xs ${issue.status === 'Resolved' ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' :
+                                                            issue.status === 'In Progress' ? 'bg-blue-100 text-blue-700 hover:bg-blue-200' :
+                                                                'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                                                            }`}>
+                                                            {issue.status}
+                                                        </Badge>
+                                                    </div>
+                                                    <p className="text-sm text-slate-700 mt-1 line-clamp-1">{issue.description}</p>
+                                                    <span className="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                                                        <MapPin className="h-3 w-3" /> {issue.location} • {issue.reportedBy}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    {issue.status === "Open" && (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="outline"
+                                                            className="h-8 gap-1 border-blue-200 text-blue-700 hover:bg-blue-50"
+                                                            onClick={() => handleUpdateStatus(issue.id, "In Progress")}
+                                                        >
+                                                            Details & Start
+                                                        </Button>
+                                                    )}
+
+                                                    {issue.status !== "Resolved" && (
+                                                        <Button
+                                                            size="sm"
+                                                            className="h-8 gap-1 bg-emerald-600 hover:bg-emerald-700"
+                                                            onClick={() => handleUpdateStatus(issue.id, "Resolved")}
+                                                        >
+                                                            <Check className="h-4 w-4" />
+                                                            {issue.status === "Open" ? "Resolve" : "Complete"}
+                                                        </Button>
+                                                    )}
+
+                                                    {issue.status === "Resolved" && (
+                                                        <span className="text-xs font-medium text-emerald-600 flex items-center gap-1">
+                                                            <CheckCircle className="h-4 w-4" /> Completed
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                                            <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center mb-4">
+                                                <CheckCircle className="h-6 w-6 text-emerald-600" />
+                                            </div>
+                                            <h3 className="text-lg font-medium text-slate-900">All Clear!</h3>
+                                            <p className="text-sm text-slate-600 mt-1">No flagged items require attention at this time.</p>
+                                        </div>
+                                    )}
                                 </div>
-                                <h3 className="text-lg font-medium text-slate-900">All Clear!</h3>
-                                <p className="text-sm text-slate-600 mt-1">No flagged items require attention at this time.</p>
                             </CardContent>
                         </Card>
                     </div>
