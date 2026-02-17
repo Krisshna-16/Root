@@ -3,9 +3,10 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
-import { LayoutDashboard, TreePine, AlertTriangle, BarChart3, Leaf, Home, Menu, X, Shield, Map as MapIcon, User } from "lucide-react"
+import { LayoutDashboard, TreePine, AlertTriangle, BarChart3, Leaf, Home, Menu, X, Shield, Map as MapIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { UserButton } from "@clerk/nextjs"
 import { VintageLogo } from "@/components/vintage-logo"
 
 const navigation = [
@@ -31,9 +32,7 @@ export function MobileNav() {
           {/* <span className="font-bold text-foreground">ROOTSENSE</span> */}
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#d4af37]">
-            <User className="h-4 w-4 text-[#1a3a1a]" />
-          </div>
+          <UserButton afterSignOutUrl="/" />
           <Button
             variant="ghost"
             size="icon"
