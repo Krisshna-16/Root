@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # RootSense Frontend
 
 A modern sustainability intelligence platform for college campuses built with Next.js 16.
@@ -91,3 +92,6 @@ This project is private and proprietary.
 ## 👥 Team
 
 Developed by Team RootSense
+=======
+# Root
+>>>>>>> 31c796a2af162efb87486cf80dfe1baa16285be5
